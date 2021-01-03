@@ -1,9 +1,9 @@
 package com.tonghoangvu.lhufriends.controllers;
 
 import com.tonghoangvu.lhufriends.common.Const;
+import com.tonghoangvu.lhufriends.common.ErrorCode;
 import com.tonghoangvu.lhufriends.entities.Student;
 import com.tonghoangvu.lhufriends.exception.AppException;
-import com.tonghoangvu.lhufriends.common.ErrorCode;
 import com.tonghoangvu.lhufriends.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
