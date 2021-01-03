@@ -44,10 +44,7 @@ function clearTableBody() {
 }
 
 function buildQuery() {
-    const query = {
-        page: pageInput.value,
-        size: sizeInput.value
-    };
+    const query = {};
     const QUERY_FIELDS = [
         'studentId', 'fullName', 'classId', 'gender',
         'birthday', 'placeOfBirth', 'ethnic', 'nationality',
@@ -89,7 +86,7 @@ function reload() {
 
     // Fetch data
     let failed = false;
-    fetch('/students', {
+    fetch('/students/?page=' + pageInput.value + '&size=' + sizeInput.value, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -103,7 +100,7 @@ function reload() {
         })
         .then(parsedJSON => {
             if (failed)
-                return alert('Error: ' + parsedJSON.message);
+                return alert(parsedJSON.code + ': ' + parsedJSON.message);
             loadData(parsedJSON);
         })
         .catch(error => {
