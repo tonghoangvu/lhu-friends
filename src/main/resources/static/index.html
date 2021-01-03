@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lhu-friends</title>
+    <link rel="shortcut icon" href="img/icon-48.png" type="image/png">
+
+    <!-- your-css -->
+    <link rel="stylesheet" href="your-css/colors.css">
+    <link rel="stylesheet" href="your-css/default.css">
+    <link rel="stylesheet" href="your-css/classes.css">
+    <link rel="stylesheet" href="your-css/sizes.css">
+    <link rel="stylesheet" href="your-css/scrollbar.css">
+    <link rel="stylesheet" href="your-css/components.css">
+    <link rel="stylesheet" href="your-css/animation.css">
+    <link rel="stylesheet" href="your-css/utils.css">
+    <script src="your-css/config.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/index.js" defer></script>
+</head>
+<body class="p1">
+    <div class="mb1">
+        <label>Items per page</label>
+        <input type="number" placeholder="size" value="10" id="size-input">
+        <label>Pagination</label>
+        <a href="#" id="prev-button">Prev</a>
+        <input type="number" placeholder="page" value="0" id="page-input"
+            width="20px">
+        <a href="#" id="next-button">Next</a>
+        <button id="reload-button">Reload</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>MSSV</th>
+                <th>Họ tên</th>
+                <th>Lớp</th>
+                <th>Giới tính</th>
+                <th>Ngày sinh</th>
+                <th>Nơi sinh</th>
+                <th>Dân tộc</th>
+                <th>Quốc tịch</th>
+                <th>SĐT</th>
+                <th>Email</th>
+                <th>Facebook</th>
+                <th>Ảnh</th>
+                <th>Avatar</th>
+            </tr>
+            <tr>
+                <td contenteditable="true" placeholder="Regex" id="studentId"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="fullName"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="classId"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Match" id="gender"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="birthday"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="placeOfBirth"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="ethnic"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="nationality"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="phone"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="email"
+                    class="single-line"></td>
+                <td contenteditable="true" placeholder="Regex" id="facebook"
+                    class="single-line"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody id="data-table-body">
+        </tbody>
+    </table>
+</body>
+</html>

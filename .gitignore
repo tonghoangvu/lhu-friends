@@ -1,3 +1,7 @@
+# Secret
+main/resources/
+
+# Project
 HELP.md
 .gradle
 build/

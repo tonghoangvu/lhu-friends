@@ -1,0 +1,9 @@
+td[contenteditable="true"] {
+    outline: none;
+}
+
+td[contenteditable="true"]:empty::before {
+    content: attr(placeholder);
+    color: gray;
+    cursor: text;
+}
