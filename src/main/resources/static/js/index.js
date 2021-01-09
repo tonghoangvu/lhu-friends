@@ -4,6 +4,9 @@ const pageInput = document.getElementById('page-input');
 const sizeInput = document.getElementById('size-input');
 const prevButton = document.getElementById('prev-button');
 const nextButton = document.getElementById('next-button');
+const loading = document.getElementById('loading');
+const backToTop = document.getElementById('back-to-top');
+const tableContainer = document.getElementById('table-container');
 
 loadConfig(defaultConfig);
 loadConfig(baseTheme);
@@ -12,6 +15,11 @@ loadConfig(lightTheme);
 (function assignEvents() {
     // Reload button
     reloadButton.addEventListener('click', reload);
+
+    // Back to top
+    backToTop.addEventListener('click', function () {
+        tableContainer.scrollIntoView();
+    });
 
     // Previous
     prevButton.addEventListener('click', function () {
@@ -56,22 +64,36 @@ function buildQuery() {
     return query;
 }
 
-function loadData(parsedJSON) {
+function loadData(parsedJSON, page, size) {
+    let i = page * size;
     for (const e of parsedJSON) {
-        let tdList = '';
-        const FIELDS = [
-            'studentId', 'fullName', 'classId', 'gender', 'birthday',
-            'placeOfBirth', 'ethnic', 'nationality', 'phone', 'email',
-            'facebook'
-        ];
-        for (let field of FIELDS) {
+        // Replace falsy fields by empty string
+        for (const field in e)
             if (!e[field])
                 e[field] = '';
-            tdList += '<td>' + e[field] + '</td>';
-        }
+
+        i++;
+        let tdList = '<td class="center">' + i + '</td>';
+
+        tdList += '<td class="center">' + e['studentId'] + '</td>';
+        tdList += '<td>' + e['fullName'] + '</td>';
+        tdList += '<td class="center">' + e['classId'] + '</td>';
+        tdList += '<td class="center">' + e['gender'] + '</td>';
+        tdList += '<td class="center">' + e['birthday'] + '</td>';
+        tdList += '<td class="center">' + e['placeOfBirth'] + '</td>';
+        tdList += '<td class="center">' + e['ethnic'] + '</td>';
+        tdList += '<td class="center">' + e['nationality'] + '</td>';
 
         tdList += '<td><img src="' + e['image'] + '" width="100"></td>';
         tdList += '<td><img src="' + e['avatar'] + '" width="100"></td>';
+
+        tdList += '<td class="center">' +
+            '<a href="tel:+84' + e['phone'] + '">' + e['phone'] +
+            '</a></td>';
+        tdList += '<td>' +
+            '<a href="mailto:' + e['email'] + '">' + e['email'] +
+            '</a></td>';
+        tdList += '<td>' + e['facebook'] + '</td>';
 
         dataTableBody.innerHTML += '<tr>' + tdList + '</tr>';
     }
@@ -79,14 +101,17 @@ function loadData(parsedJSON) {
 
 function reload() {
     // Clear table
+    loading.classList.add('spinner');
     clearTableBody();
 
     // Build query
+    const page = pageInput.value;
+    const size = sizeInput.value;
     const query = buildQuery();
 
     // Fetch data
     let failed = false;
-    fetch('/students/?page=' + pageInput.value + '&size=' + sizeInput.value, {
+    fetch('/students/?page=' + page + '&size=' + size, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -101,9 +126,12 @@ function reload() {
         .then(parsedJSON => {
             if (failed)
                 return alert(parsedJSON.code + ': ' + parsedJSON.message);
-            loadData(parsedJSON);
+            loadData(parsedJSON, page, size);
         })
         .catch(error => {
             console.log('Error', error);
+        })
+        .finally(() => {
+            loading.classList.remove('spinner');
         });
 }
