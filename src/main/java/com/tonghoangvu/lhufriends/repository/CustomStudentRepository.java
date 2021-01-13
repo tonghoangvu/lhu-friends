@@ -1,6 +1,6 @@
 package com.tonghoangvu.lhufriends.repository;
 
-import com.tonghoangvu.lhufriends.entities.Student;
+import com.tonghoangvu.lhufriends.entity.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

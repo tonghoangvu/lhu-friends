@@ -1,6 +1,6 @@
 package com.tonghoangvu.lhufriends.service;
 
-import com.tonghoangvu.lhufriends.entities.Student;
+import com.tonghoangvu.lhufriends.entity.Student;
 import com.tonghoangvu.lhufriends.repository.CustomStudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

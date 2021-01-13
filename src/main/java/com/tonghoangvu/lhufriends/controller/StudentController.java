@@ -1,8 +1,8 @@
-package com.tonghoangvu.lhufriends.controllers;
+package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.Const;
 import com.tonghoangvu.lhufriends.common.ErrorCode;
-import com.tonghoangvu.lhufriends.entities.Student;
+import com.tonghoangvu.lhufriends.entity.Student;
 import com.tonghoangvu.lhufriends.exception.AppException;
 import com.tonghoangvu.lhufriends.service.StudentService;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.tonghoangvu.lhufriends.entities;
+package com.tonghoangvu.lhufriends.entity;
 
 import lombok.Builder;
 import lombok.Getter;
