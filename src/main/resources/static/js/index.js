@@ -84,8 +84,12 @@ function loadData(parsedJSON, page, size) {
         tdList += '<td class="center">' + e['ethnic'] + '</td>';
         tdList += '<td class="center">' + e['nationality'] + '</td>';
 
-        tdList += '<td><img src="' + e['image'] + '" width="100"></td>';
-        tdList += '<td><img src="' + e['avatar'] + '" width="100"></td>';
+        tdList += '<td class="img">' +
+            '<img src="' + e['image'] + '" onerror="this.style.display=\'none\'">' +
+            '</td>';
+        tdList += '<td class="img">' +
+            '<img src="' + e['avatar'] + '" onerror="this.style.display=\'none\'">' +
+            '</td>';
 
         tdList += '<td class="center">' +
             '<a href="tel:+84' + e['phone'] + '">' + e['phone'] +

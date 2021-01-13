@@ -18,6 +18,14 @@ th, td.center {
     text-align: center;
 }
 
+td.img {
+    padding: 0.5rem;
+}
+
+td.img > img {
+    width: 100px;
+}
+
 main {
     display: flex;
     flex-direction: column;
