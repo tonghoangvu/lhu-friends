@@ -1,7 +1,8 @@
 package com.tonghoangvu.lhufriends.entity;
 
-import lombok.Builder;
+import com.tonghoangvu.lhufriends.dto.StudentDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,7 +10,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 @Document(collection = "students")
 public class Student {
     private String id;
@@ -31,4 +32,22 @@ public class Student {
     private String phone;
     private String groupName;
     private String facebook;
+
+    public void loadDto(StudentDto dto) {
+        this.studentId = dto.getStudentId();
+        this.fullName = dto.getFullName();
+        this.birthday = dto.getBirthday();
+        this.gender = dto.getGender();
+        this.placeOfBirth = dto.getPlaceOfBirth();
+        this.ethnic = dto.getEthnic();
+        this.nationality = dto.getNationality();
+        this.classId = dto.getClassId();
+        this.image = dto.getImage();
+        this.avatar = dto.getAvatar();
+        this.userName = dto.getUserName();
+        this.email = dto.getEmail();
+        this.phone = dto.getPhone();
+        this.groupName = dto.getGroupName();
+        this.facebook = dto.getFacebook();
+    }
 }
