@@ -1,14 +1,19 @@
 package com.tonghoangvu.lhufriends.repository;
 
+import com.mongodb.bulk.BulkWriteResult;
+import com.tonghoangvu.lhufriends.dto.StudentDto;
 import com.tonghoangvu.lhufriends.entity.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,6 +23,55 @@ public class CustomStudentRepository {
 
     private Criteria regexCriteria(String field, String value) {
         return Criteria.where(field).regex(value, "i");
+    }
+
+    public int upsertStudentList(List<StudentDto> studentDtoList) {
+        // Create a list of bulk operations
+        BulkOperations bulkOps = mongoOperations.bulkOps(
+                BulkOperations.BulkMode.UNORDERED, Student.class);
+
+        for (StudentDto studentDto: studentDtoList) {
+            // Update not null DTO fields
+            Update update = new Update()
+                    .currentDate("updatedAt")
+                    .setOnInsert("createdAt", new Date());
+            if (studentDto.getStudentId() != null)
+                update.set("studentId", studentDto.getStudentId());
+            if (studentDto.getFullName() != null)
+                update.set("fullName", studentDto.getFullName());
+            if (studentDto.getBirthday() != null)
+                update.set("birthday", studentDto.getBirthday());
+            if (studentDto.getGender() != null)
+                update.set("gender", studentDto.getGender());
+            if (studentDto.getPlaceOfBirth() != null)
+                update.set("placeOfBirth", studentDto.getPlaceOfBirth());
+            if (studentDto.getEthnic() != null)
+                update.set("ethnic", studentDto.getEthnic());
+            if (studentDto.getNationality() != null)
+                update.set("nationality", studentDto.getNationality());
+            if (studentDto.getClassId() != null)
+                update.set("classId", studentDto.getClassId());
+            if (studentDto.getImage() != null)
+                update.set("image", studentDto.getImage());
+            if (studentDto.getAvatar() != null)
+                update.set("avatar", studentDto.getAvatar());
+            if (studentDto.getUserName() != null)
+                update.set("userName", studentDto.getUserName());
+            if (studentDto.getEmail() != null)
+                update.set("email", studentDto.getEmail());
+            if (studentDto.getPhone() != null)
+                update.set("phone", studentDto.getPhone());
+            if (studentDto.getGroupName() != null)
+                update.set("groupName", studentDto.getGroupName());
+            if (studentDto.getFacebook() != null)
+                update.set("facebook", studentDto.getFacebook());
+
+            Query query = new Query(Criteria.where("studentId").is(studentDto.getStudentId()));
+            bulkOps.upsert(query, update);
+        }
+
+        BulkWriteResult result = bulkOps.execute();
+        return result.getModifiedCount() + result.getUpserts().size();
     }
 
     public List<Student> findAllWithFilterAndPagination(Student studentFilter, int page, int size) {
