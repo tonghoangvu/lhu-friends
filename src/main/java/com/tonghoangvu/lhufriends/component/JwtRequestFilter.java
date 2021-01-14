@@ -2,6 +2,7 @@ package com.tonghoangvu.lhufriends.component;
 
 import com.tonghoangvu.lhufriends.service.JwtTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +23,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenService jwtTokenService;
     private final UserDetailsService userDetailsService;
 
+    @Value("${JWT_AUTH_HEADER}")
+    private String TOKEN_HEADER;
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        final String TOKEN_HEADER = "Authorization";
         final String TOKEN_HEADER_PREFIX = "Bearer ";
         final String tokenHeader = request.getHeader(TOKEN_HEADER);
 
