@@ -1,5 +1,6 @@
 package com.tonghoangvu.lhufriends.entity;
 
+import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
 import com.tonghoangvu.lhufriends.dto.UserDto;
 import lombok.Getter;
@@ -24,10 +25,20 @@ public class User {
     private String username;
     private String password;
     private String displayName;
+    private Gender gender;
+    private String bio;
+    private Date birthday;
+    private String email;
+    private String phone;
 
     public User(UserDto userDto) {
         this.username = userDto.getUsername();
         this.password = userDto.getPassword();
         this.displayName = userDto.getDisplayName();
+        this.gender = userDto.getGender();
+        this.bio = userDto.getBio();
+        this.birthday = userDto.getBirthday();
+        this.email = userDto.getEmail();
+        this.phone = userDto.getPhone();
     }
 }

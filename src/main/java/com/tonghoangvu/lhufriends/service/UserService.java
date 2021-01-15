@@ -31,6 +31,13 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private User getUserOrExitWithException(String username) {
+        User user = userRepository.findFirstByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("Username not found");
+        return user;
+    }
+
     public String generateToken(UserDto userDto) {
         // Load existed user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
@@ -64,31 +71,35 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        User user = userRepository.findFirstByUsername(username);
-        if (user == null)
-            throw new UsernameNotFoundException("Username not found");
-        return user;
+        return getUserOrExitWithException(username);
     }
 
     public User updateUser(String username, UserDto userDto) {
-        User user = userRepository.findFirstByUsername(username);
-        if (user == null)
-            throw new UsernameNotFoundException("Username not found");
+        User user = getUserOrExitWithException(username);
 
         // Update not null fields (exclude password)
+        // Required fields are not allow empty value, but optional fields can be set empty value
         if (userDto.getUsername() != null)
             user.setUsername(userDto.getUsername());
         if (userDto.getDisplayName() != null)
             user.setDisplayName(userDto.getDisplayName());
+        if (userDto.getGender() != null)
+            user.setGender(userDto.getGender());
+        if (userDto.getBio() != null)
+            user.setBio(userDto.getBio());
+        if (userDto.getBirthday() != null)
+            user.setBirthday(userDto.getBirthday());
+        if (userDto.getEmail() != null)
+            user.setEmail(userDto.getEmail());
+        if (userDto.getPhone() != null)
+            user.setPhone(userDto.getPhone());
 
         user.setUpdatedAt(new Date());
         return userRepository.save(user);
     }
 
     public void softDeleteUser(String username) {
-        User user = userRepository.findFirstByUsername(username);
-        if (user == null)
-            throw new UsernameNotFoundException("Username not found");
+        User user = getUserOrExitWithException(username);
         user.setDeleted(true);
         user.setUpdatedAt(new Date());
         userRepository.save(user);
