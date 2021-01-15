@@ -49,12 +49,18 @@ public class UserService {
 
     public User createUser(UserDto userDto) {
         User user = new User(userDto);
+
+        // Hash password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreatedAt(new Date());
+
+        // Add default roles
         Set<UserRole> roles = new HashSet<>();
         roles.add(UserRole.ROLE_USER);
         user.setRoles(roles);
 
+        // Save to DB
+        user.setCreatedAt(new Date());
+        user.setUpdatedAt(new Date());
         return userRepository.save(user);
     }
 
@@ -63,5 +69,21 @@ public class UserService {
         if (user == null)
             throw new UsernameNotFoundException("Username not found");
         return user;
+    }
+
+    public User updateUser(String username, UserDto userDto) {
+        User user = userRepository.findFirstByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("Username not found");
+
+        // Update not null fields (exclude password)
+        if (userDto.getUsername() != null)
+            user.setUsername(userDto.getUsername());
+        if (userDto.getDisplayName() != null)
+            user.setDisplayName(userDto.getDisplayName());
+
+        // Save to DB
+        user.setUpdatedAt(new Date());
+        return userRepository.save(user);
     }
 }

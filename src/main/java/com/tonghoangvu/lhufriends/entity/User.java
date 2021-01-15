@@ -16,11 +16,13 @@ import java.util.Set;
 @NoArgsConstructor
 public class User {
     private String id;
+    private Date createdAt;
+    private Date updatedAt;
+    private Set<UserRole> roles;
+
     private String username;
     private String password;
     private String displayName;
-    private Set<UserRole> roles;
-    private Date createdAt;
 
     public User(UserDto userDto) {
         this.username = userDto.getUsername();
