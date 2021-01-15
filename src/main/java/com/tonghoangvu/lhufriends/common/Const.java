@@ -4,7 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum Const {
-    MAX_STUDENTS_PER_REQUEST(100);
+    MAX_STUDENTS_PER_REQUEST(100),
+
+    TOKEN_HEADER_PREFIX("Bearer");
 
     private String stringValue;
     private Integer intValue;

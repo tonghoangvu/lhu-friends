@@ -109,6 +109,7 @@ public class UserService {
     public User updateUserRole(String username, Set<UserRole> roles) {
         User user = getUserOrExitWithException(username);
         user.setRoles(roles);
+        user.setUpdatedAt(new Date());
         return userRepository.save(user);
     }
 }

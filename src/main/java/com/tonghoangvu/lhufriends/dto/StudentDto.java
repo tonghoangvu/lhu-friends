@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class StudentDto {
-    @Size(min = 9, max = 9, message = "Student id is not valid")
+    @Size(min = 9, max = 9, message = "Student id is invalid")
     private String studentId;
     private String fullName;
     private String birthday;

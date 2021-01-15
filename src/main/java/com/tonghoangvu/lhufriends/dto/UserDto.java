@@ -29,14 +29,14 @@ public class UserDto {
     @NullOrNotEmpty(message = "Display name is required", groups = { OnUpdate.class })
     private String displayName;
 
-    @NotEmpty(message = "Gender is not valid", groups = { OnCreate.class })
+    @NotEmpty(message = "Gender is invalid", groups = { OnCreate.class })
     // Do not using @NullOrNotEmpty on non-string fields
     private Gender gender;
 
     private String bio;
     private Date birthday;
 
-    @Email(message = "Email is not valid", groups = { OnCreate.class, OnUpdate.class })
+    @Email(message = "Email is invalid", groups = { OnCreate.class, OnUpdate.class })
     private String email;
 
     private String phone;

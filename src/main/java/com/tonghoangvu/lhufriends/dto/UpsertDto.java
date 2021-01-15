@@ -9,8 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 public class UpsertDto {
-    private long time;
     @Valid
     private List<StudentDto> data;
+
+    private long time;
     private List<String> skipped;
 }

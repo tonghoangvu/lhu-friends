@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
         e.printStackTrace();  // Critical error, print details
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(ErrorCode.SERVER_ERROR)
-                .message("Internal server error")  // Don't send exception message to client
+                .message("Internal Server Error")  // Don't send exception message to client
                 .build();
         return ResponseEntity.status(500).body(errorResponse);
     }

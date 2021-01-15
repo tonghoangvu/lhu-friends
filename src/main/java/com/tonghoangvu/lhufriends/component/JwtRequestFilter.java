@@ -1,5 +1,6 @@
 package com.tonghoangvu.lhufriends.component;
 
+import com.tonghoangvu.lhufriends.common.Const;
 import com.tonghoangvu.lhufriends.service.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-        final String TOKEN_HEADER_PREFIX = "Bearer ";
+        final String TOKEN_HEADER_PREFIX = Const.TOKEN_HEADER_PREFIX + " ";
         final String tokenHeader = request.getHeader(TOKEN_HEADER);
 
         String token = null, username = null;
