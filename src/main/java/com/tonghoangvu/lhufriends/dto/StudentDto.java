@@ -1,21 +1,14 @@
-package com.tonghoangvu.lhufriends.entity;
+package com.tonghoangvu.lhufriends.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@Document(collection = "students")
-public class Student {
-    private String id;
-    private Date createdAt;
-    private Date updatedAt;
-
+public class StudentDto {
+    @Size(min = 9, max = 9, message = "Student id is invalid")
     private String studentId;
     private String fullName;
     private String birthday;

@@ -2,12 +2,17 @@ package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.Const;
 import com.tonghoangvu.lhufriends.common.ErrorCode;
+import com.tonghoangvu.lhufriends.dto.UpsertDto;
 import com.tonghoangvu.lhufriends.entity.Student;
 import com.tonghoangvu.lhufriends.exception.AppException;
+import com.tonghoangvu.lhufriends.model.UpsertModel;
 import com.tonghoangvu.lhufriends.service.StudentService;
+import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +22,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping("/upsert")
+    public ResponseEntity<UpsertModel> upsertStudentList(
+            @RequestBody UpsertDto upsertDto,
+            final BindingResult bindingResult) {
+        ControllerUtil.handleBindingError(bindingResult);
+        return ResponseEntity.ok(studentService.upsertStudentList(upsertDto));
+    }
 
     @PostMapping("/")
     public ResponseEntity<List<Student>> getStudentList(
