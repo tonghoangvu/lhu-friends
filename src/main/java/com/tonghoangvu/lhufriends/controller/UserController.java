@@ -7,12 +7,10 @@ import com.tonghoangvu.lhufriends.service.UserService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnAuth;
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
@@ -39,5 +37,12 @@ public class UserController {
         ControllerUtil.handleBindingError(bindingResult);
         UserModel createdUser = new UserModel(userService.createUser(userDto));
         return ResponseEntity.ok(createdUser);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/")
+    public ResponseEntity<Object> deleteAnyUser(@RequestParam("username") String username) {
+        userService.softDeleteUser(username);
+        return ResponseEntity.noContent().build();
     }
 }

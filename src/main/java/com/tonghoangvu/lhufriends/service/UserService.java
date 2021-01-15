@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -76,5 +74,14 @@ public class UserService {
 
         user.setUpdatedAt(new Date());
         return userRepository.save(user);
+    }
+
+    public void softDeleteUser(String username) {
+        User user = userRepository.findFirstByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("Username not found");
+        user.setDeleted(true);
+        user.setUpdatedAt(new Date());
+        userRepository.save(user);
     }
 }

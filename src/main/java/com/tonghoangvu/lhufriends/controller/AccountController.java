@@ -38,4 +38,12 @@ public class AccountController {
         UserModel updatedUser = new UserModel(userService.updateUser(myUsername, userDto));
         return ResponseEntity.ok(updatedUser);
     }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @DeleteMapping("/")
+    public ResponseEntity<Object> deleteMyAccount() {
+        String myUsername = authenticationFacade.getUsername();
+        userService.softDeleteUser(myUsername);
+        return ResponseEntity.noContent().build();
+    }
 }
