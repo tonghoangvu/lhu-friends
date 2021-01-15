@@ -5,6 +5,8 @@ import com.tonghoangvu.lhufriends.dto.UserDto;
 import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +55,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(UserRole.ROLE_USER));
         return userRepository.save(user);
+    }
+
+    public List<User> getUserList(int page, int size) {
+        Page<User> userInPage = userRepository.findAll(PageRequest.of(page, size));
+        return userInPage.toList();
     }
 
     public User getUser(String username) {
