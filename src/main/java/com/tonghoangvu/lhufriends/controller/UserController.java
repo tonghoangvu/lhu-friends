@@ -1,7 +1,7 @@
 package com.tonghoangvu.lhufriends.controller;
 
+import com.tonghoangvu.lhufriends.common.UserRole;
 import com.tonghoangvu.lhufriends.dto.UserDto;
-import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.model.TokenModel;
 import com.tonghoangvu.lhufriends.model.UserModel;
 import com.tonghoangvu.lhufriends.service.UserService;
@@ -14,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnAuth;
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
@@ -44,10 +46,13 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUser(
+    public ResponseEntity<List<UserModel>> getAllUser(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) {
-        return ResponseEntity.ok(userService.getUserList(page, size));
+        List<UserModel> userModelList = userService.getUserList(page, size).stream()
+                .map(UserModel::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userModelList);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -55,5 +60,14 @@ public class UserController {
     public ResponseEntity<Object> deleteAnyUser(@RequestParam("username") String username) {
         userService.softDeleteUser(username);
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/role")
+    public ResponseEntity<UserModel> updateAnyUserRole(
+            @RequestParam("username") String username,
+            @RequestParam("roles") Set<UserRole> roles) {
+        UserModel userModel = new UserModel(userService.updateUserRole(username, roles));
+        return ResponseEntity.ok(userModel);
     }
 }

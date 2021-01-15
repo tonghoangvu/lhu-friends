@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +104,11 @@ public class UserService {
         user.setDeleted(true);
         user.setUpdatedAt(new Date());
         userRepository.save(user);
+    }
+
+    public User updateUserRole(String username, Set<UserRole> roles) {
+        User user = getUserOrExitWithException(username);
+        user.setRoles(roles);
+        return userRepository.save(user);
     }
 }
