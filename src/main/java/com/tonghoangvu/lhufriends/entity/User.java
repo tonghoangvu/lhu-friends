@@ -19,7 +19,7 @@ public class User {
     private Date createdAt;
     private Date updatedAt;
     private Set<UserRole> roles;
-    private Boolean deleted;
+    private boolean deleted;
 
     private String username;
     private String password;

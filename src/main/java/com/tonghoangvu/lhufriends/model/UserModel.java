@@ -17,11 +17,13 @@ public class UserModel {
     private String displayName;
     private Set<UserRole> roles;
     private Date createdAt;
+    private boolean deleted;
 
     public UserModel(User entity) {
         this.username = entity.getUsername();
         this.displayName = entity.getDisplayName();
         this.roles = entity.getRoles();
         this.createdAt = entity.getCreatedAt();
+        this.deleted = entity.isDeleted();
     }
 }

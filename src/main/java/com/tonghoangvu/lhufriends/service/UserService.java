@@ -54,6 +54,7 @@ public class UserService {
         user.setUpdatedAt(new Date());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(UserRole.ROLE_USER));
+        user.setDeleted(false);
         return userRepository.save(user);
     }
 

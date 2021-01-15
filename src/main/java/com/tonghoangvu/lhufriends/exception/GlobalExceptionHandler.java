@@ -4,6 +4,7 @@ import com.tonghoangvu.lhufriends.common.ErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -32,6 +33,15 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(ErrorCode.ACCESS_DENIED)
+                .message(e.getMessage())  // Modified exception message
+                .build();
+        return ResponseEntity.status(403).body(errorResponse);
+    }
+
+    @ExceptionHandler(LockedException.class)
+    protected ResponseEntity<ErrorResponse> handleLockedException(LockedException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(ErrorCode.ACCOUNT_LOCKED)
                 .message(e.getMessage())  // Modified exception message
                 .build();
         return ResponseEntity.status(403).body(errorResponse);

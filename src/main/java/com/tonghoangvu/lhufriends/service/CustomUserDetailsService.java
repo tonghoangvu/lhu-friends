@@ -4,6 +4,7 @@ import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         User foundUser = userRepository.findFirstByUsername(username);
         if (foundUser == null)
             throw new UsernameNotFoundException("Username not found");
+
+        if (foundUser.isDeleted() == Boolean.TRUE)
+            throw new LockedException("Account locked");
 
         List<GrantedAuthority> authorityList = foundUser.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
