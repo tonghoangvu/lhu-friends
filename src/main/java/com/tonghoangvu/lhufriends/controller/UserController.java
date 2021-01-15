@@ -1,6 +1,5 @@
 package com.tonghoangvu.lhufriends.controller;
 
-import com.tonghoangvu.lhufriends.component.AuthenticationFacade;
 import com.tonghoangvu.lhufriends.dto.UserDto;
 import com.tonghoangvu.lhufriends.model.TokenModel;
 import com.tonghoangvu.lhufriends.model.UserModel;
@@ -8,18 +7,20 @@ import com.tonghoangvu.lhufriends.service.UserService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static com.tonghoangvu.lhufriends.common.ValidationProfiles.*;
+import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnAuth;
+import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final AuthenticationFacade authenticationFacade;
     private final UserService userService;
 
     @PostMapping("/auth")
@@ -38,24 +39,5 @@ public class UserController {
         ControllerUtil.handleBindingError(bindingResult);
         UserModel createdUser = new UserModel(userService.createUser(userDto));
         return ResponseEntity.ok(createdUser);
-    }
-
-    @PreAuthorize("hasAnyRole('USER')")
-    @PutMapping("/")
-    public ResponseEntity<UserModel> updateUser(
-            @Validated(OnUpdate.class) @RequestBody UserDto userDto,
-            final BindingResult bindingResult) {
-        ControllerUtil.handleBindingError(bindingResult);
-        String username = authenticationFacade.getUsername();
-        UserModel updatedUser = new UserModel(userService.updateUser(username, userDto));
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @PreAuthorize("hasAnyRole('USER')")
-    @GetMapping("/me")
-    public ResponseEntity<UserModel> getMyInfo() {
-        String username = authenticationFacade.getUsername();
-        UserModel myUser = new UserModel(userService.getUser(username));
-        return ResponseEntity.ok(myUser);
     }
 }

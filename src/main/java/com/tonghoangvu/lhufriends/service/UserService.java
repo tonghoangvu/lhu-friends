@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,9 +31,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public String generateToken(UserDto userDto) {
-        // Only get username & password
-        UserDetails userDetails = userDetailsService
-                .loadUserByUsername(userDto.getUsername());
+        // Load existed user details
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
 
         // Modify BadCredentialsException message
         try {
@@ -49,18 +49,10 @@ public class UserService {
 
     public User createUser(UserDto userDto) {
         User user = new User(userDto);
-
-        // Hash password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // Add default roles
-        Set<UserRole> roles = new HashSet<>();
-        roles.add(UserRole.ROLE_USER);
-        user.setRoles(roles);
-
-        // Save to DB
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singleton(UserRole.ROLE_USER));
         return userRepository.save(user);
     }
 
@@ -82,7 +74,6 @@ public class UserService {
         if (userDto.getDisplayName() != null)
             user.setDisplayName(userDto.getDisplayName());
 
-        // Save to DB
         user.setUpdatedAt(new Date());
         return userRepository.save(user);
     }
