@@ -115,7 +115,7 @@ function reload() {
 
     // Fetch data
     let failed = false;
-    fetch('/students/?page=' + page + '&size=' + size, {
+    fetch('/api/students/?page=' + page + '&size=' + size, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
