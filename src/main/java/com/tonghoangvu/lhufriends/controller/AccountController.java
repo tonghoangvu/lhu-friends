@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/account")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class AccountController {
     private final AuthenticationFacade authenticationFacade;

@@ -22,6 +22,7 @@ import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
