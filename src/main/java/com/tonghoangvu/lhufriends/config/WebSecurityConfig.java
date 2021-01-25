@@ -27,7 +27,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${ALLOW_ORIGINS}")
+    @Value("${com.app.ALLOW_ORIGINS}")
     private List<String> ALLOW_ORIGINS;
 
     private final UserDetailsService userDetailsService;

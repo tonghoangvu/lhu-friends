@@ -14,10 +14,10 @@ import java.util.function.Function;
 
 @Service
 public class JwtTokenService {
-    @Value("${JWT_SECRET}")
+    @Value("${com.app.JWT_SECRET}")
     private String JWT_SECRET;
 
-    @Value("${JWT_TTL}")
+    @Value("${com.app.JWT_TTL}")
     private long JWT_TTL;  // Time to live
 
     private Claims extractAllClaims(String token) {

@@ -24,7 +24,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenService jwtTokenService;
     private final UserDetailsService userDetailsService;
 
-    @Value("${JWT_AUTH_HEADER}")
+    @Value("${com.app.JWT_AUTH_HEADER}")
     private String TOKEN_HEADER;
 
     @Override

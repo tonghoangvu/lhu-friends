@@ -20,7 +20,7 @@ import java.util.List;
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
-    @Value("${JWT_AUTH_HEADER}")
+    @Value("${com.app.JWT_AUTH_HEADER}")
     private String AUTH_HEADER;
 
     @Bean
