@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedOrigins(ALLOW_ORIGINS);
-        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(Collections.singletonList("*"));
         corsConfig.setAllowCredentials(false);  // Disable if no cookies sent
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
