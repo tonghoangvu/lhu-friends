@@ -1,0 +1,29 @@
+{
+    "properties": [
+        {
+            "name": "com.app.JWT_AUTH_HEADER",
+            "type": "java.lang.String",
+            "description": "Header name which contains JWT token."
+        },
+        {
+            "name": "com.app.JWT_SECRET",
+            "type": "java.lang.String",
+            "description": "The secret key for JWT."
+        },
+        {
+            "name": "com.app.JWT_TTL",
+            "type": "java.lang.Long",
+            "description": "Time to live (TTL) for JWT token."
+        },
+        {
+            "name": "com.app.WEB_DEV_PORT",
+            "type": "java.lang.Short",
+            "description": "The localhost port which frontend run on when developing."
+        },
+        {
+            "name": "com.app.ALLOW_ORIGINS",
+            "type": "java.util.List<java.lang.String>",
+            "description": "List of allowed origins over CORS."
+        }
+    ]
+}

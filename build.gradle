@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'java'
 
 group = 'com.tonghoangvu'
-version = '1.0.0-SNAPSHOT'
+version = '1.1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
@@ -25,7 +25,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'

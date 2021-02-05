@@ -21,7 +21,7 @@ import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnAuth;
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
