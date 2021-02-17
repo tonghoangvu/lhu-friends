@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = NullOrNotEmptyValidator.class)
 public @interface NullOrNotEmpty {
     @NotNull String message() default "{javax.validation.constraints.Pattern.message}";
-    @NotNull Class<?>[] groups() default {};
+    @NotNull Class<?> @NotNull [] groups() default {};
 }
 
 class NullOrNotEmptyValidator implements ConstraintValidator<NullOrNotEmpty, String> {
