@@ -11,6 +11,7 @@ public class AuthenticationFacade {
     }
 
     public String getUsername() {
-        return getAuthentication().getName();
+        Authentication authentication = getAuthentication();
+        return authentication == null ? null : authentication.getName();
     }
 }
