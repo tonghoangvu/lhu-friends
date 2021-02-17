@@ -4,6 +4,7 @@ import com.mongodb.bulk.BulkWriteResult;
 import com.tonghoangvu.lhufriends.dto.StudentDto;
 import com.tonghoangvu.lhufriends.entity.Student;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.BulkOperations;
@@ -19,13 +20,13 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class CustomStudentRepository {
-    private final MongoOperations mongoOperations;
+    private final @NotNull MongoOperations mongoOperations;
 
-    private Criteria regexCriteria(String field, String value) {
+    private @NotNull Criteria regexCriteria(@NotNull String field, @NotNull String value) {
         return Criteria.where(field).regex(value, "i");
     }
 
-    public int upsertStudentList(List<StudentDto> studentDtoList) {
+    public int upsertStudentList(@NotNull List<StudentDto> studentDtoList) {
         // Create a list of bulk operations
         BulkOperations bulkOps = mongoOperations.bulkOps(
                 BulkOperations.BulkMode.UNORDERED, Student.class);
@@ -74,7 +75,8 @@ public class CustomStudentRepository {
         return result.getModifiedCount() + result.getUpserts().size();
     }
 
-    public List<Student> findAllWithFilterAndPagination(Student studentFilter, int page, int size) {
+    public @NotNull List<Student> findAllWithFilterAndPagination(
+            @NotNull Student studentFilter, int page, int size) {
         // Build query
         Query query = new Query();
         query.with(Sort.by("studentId").descending());

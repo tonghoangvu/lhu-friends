@@ -5,6 +5,7 @@ import com.tonghoangvu.lhufriends.dto.UserDto;
 import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,22 +25,22 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
+    private final @NotNull AuthenticationManager authenticationManager;
+    private final @NotNull PasswordEncoder passwordEncoder;
 
-    private final UserDetailsService userDetailsService;
-    private final JwtTokenService jwtTokenService;
+    private final @NotNull UserDetailsService userDetailsService;
+    private final @NotNull JwtTokenService jwtTokenService;
 
-    private final UserRepository userRepository;
+    private final @NotNull UserRepository userRepository;
 
-    private User getUserOrExitWithException(String username) {
+    private @NotNull User getUserOrExitWithException(String username) {
         User user = userRepository.findFirstByUsername(username);
         if (user == null)
             throw new UsernameNotFoundException("Username not found");
         return user;
     }
 
-    public String generateToken(UserDto userDto) {
+    public String generateToken(@NotNull UserDto userDto) {
         // Load existed user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
 
@@ -56,7 +57,7 @@ public class UserService {
         return jwtTokenService.generateToken(userDetails);
     }
 
-    public User createUser(UserDto userDto) {
+    public @NotNull User createUser(@NotNull UserDto userDto) {
         User user = new User(userDto);
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
@@ -66,16 +67,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> getUserList(int page, int size) {
+    public @NotNull List<User> getUserList(int page, int size) {
         Page<User> userInPage = userRepository.findAll(PageRequest.of(page, size));
         return userInPage.toList();
     }
 
-    public User getUser(String username) {
+    public @NotNull User getUser(String username) {
         return getUserOrExitWithException(username);
     }
 
-    public User updateUser(String username, UserDto userDto) {
+    public @NotNull User updateUser(String username, @NotNull UserDto userDto) {
         User user = getUserOrExitWithException(username);
 
         // Update not null fields (exclude password)
@@ -106,7 +107,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User updateUserRole(String username, Set<UserRole> roles) {
+    public @NotNull User updateUserRole(String username, @NotNull Set<UserRole> roles) {
         User user = getUserOrExitWithException(username);
         user.setRoles(roles);
         user.setUpdatedAt(new Date());

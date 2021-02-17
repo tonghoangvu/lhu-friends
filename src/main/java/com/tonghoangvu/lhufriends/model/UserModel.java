@@ -6,6 +6,7 @@ import com.tonghoangvu.lhufriends.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class UserModel {
     private String email;
     private String phone;
 
-    public UserModel(User entity) {
+    public UserModel(@NotNull User entity) {
         this.createdAt = entity.getCreatedAt();
         this.updatedAt = entity.getUpdatedAt();
         this.roles = entity.getRoles();

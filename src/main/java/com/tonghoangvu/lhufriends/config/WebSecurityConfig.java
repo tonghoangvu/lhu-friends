@@ -2,6 +2,7 @@ package com.tonghoangvu.lhufriends.config;
 
 import com.tonghoangvu.lhufriends.component.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,16 +31,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${com.app.ALLOW_ORIGINS}")
     private List<String> ALLOW_ORIGINS;
 
-    private final UserDetailsService userDetailsService;
-    private final JwtRequestFilter jwtRequestFilter;
+    private final @NotNull UserDetailsService userDetailsService;
+    private final @NotNull JwtRequestFilter jwtRequestFilter;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(@NotNull AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(@NotNull HttpSecurity http) throws Exception {
         http
                 .cors().and()
                 .csrf().disable()
@@ -56,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public @NotNull CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedOrigins(ALLOW_ORIGINS);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -74,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoderBean() {
+    public @NotNull PasswordEncoder passwordEncoderBean() {
         return new BCryptPasswordEncoder();
     }
 }

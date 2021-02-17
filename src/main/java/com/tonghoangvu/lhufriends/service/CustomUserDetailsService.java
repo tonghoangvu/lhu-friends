@@ -3,6 +3,7 @@ package com.tonghoangvu.lhufriends.service;
 import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,10 +20,11 @@ import java.util.stream.Collectors;
 @Primary
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final @NotNull UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public @NotNull UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
         User foundUser = userRepository.findFirstByUsername(username);
         if (foundUser == null)
             throw new UsernameNotFoundException("Username not found");

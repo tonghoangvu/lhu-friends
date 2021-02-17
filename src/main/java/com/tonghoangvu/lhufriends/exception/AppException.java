@@ -2,6 +2,7 @@ package com.tonghoangvu.lhufriends.exception;
 
 import com.tonghoangvu.lhufriends.common.ErrorCode;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -10,7 +11,7 @@ public class AppException extends RuntimeException {
     private final ErrorCode errorCode;
     private final String message;
 
-    public AppException(HttpStatus httpStatus, ErrorCode errorCode, String message) {
+    public AppException(@NotNull HttpStatus httpStatus, ErrorCode errorCode, String message) {
         super(message);
         this.statusCode = httpStatus.value();
         this.errorCode = errorCode;

@@ -5,6 +5,7 @@ import com.tonghoangvu.lhufriends.entity.Student;
 import com.tonghoangvu.lhufriends.model.UpsertModel;
 import com.tonghoangvu.lhufriends.repository.CustomStudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,9 +14,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StudentService {
-    private final CustomStudentRepository customStudentRepository;
+    private final @NotNull CustomStudentRepository customStudentRepository;
 
-    public UpsertModel upsertStudentList(UpsertDto upsertDto) {
+    public UpsertModel upsertStudentList(@NotNull UpsertDto upsertDto) {
         long startTime = new Date().getTime();
         long upserted = customStudentRepository.upsertStudentList(upsertDto.getData());
         return UpsertModel.builder()
@@ -24,7 +25,7 @@ public class StudentService {
                 .build();
     }
 
-    public List<Student> getStudentList(Student studentFilter, int page, int size) {
+    public @NotNull List<Student> getStudentList(@NotNull Student studentFilter, int page, int size) {
         List<Student> studentList = customStudentRepository
                 .findAllWithFilterAndPagination(studentFilter, page, size);
         if (studentFilter.getPhone() == null || studentFilter.getPhone().isEmpty())

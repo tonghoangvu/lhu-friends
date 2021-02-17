@@ -1,5 +1,8 @@
 package com.tonghoangvu.lhufriends.config;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +39,8 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo apiInfo() {
+    @Contract(" -> new")
+    private @NotNull ApiInfo apiInfo() {
         return new ApiInfo(
                 "lhu-friends",
                 "Tiện ích tìm kiếm bạn bè LHU",
@@ -53,7 +57,8 @@ public class SwaggerConfig {
         );
     }
 
-    private ApiKey apiKey() {
+    @Contract(" -> new")
+    private @NotNull ApiKey apiKey() {
         return new ApiKey("JWT", AUTH_HEADER, "header");
     }
 
@@ -63,7 +68,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private List<SecurityReference> defaultAuth() {
+    private @NotNull @Unmodifiable List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope =
                 new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];

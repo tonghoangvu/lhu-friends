@@ -7,6 +7,7 @@ import com.tonghoangvu.lhufriends.model.UserModel;
 import com.tonghoangvu.lhufriends.service.UserService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -24,21 +25,21 @@ import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final @NotNull UserService userService;
 
     @PostMapping("/auth")
-    public ResponseEntity<TokenModel> authenticate(
-            @Validated(OnAuth.class) @RequestBody UserDto userDto,
-            final BindingResult bindingResult) {
+    public @NotNull ResponseEntity<TokenModel> authenticate(
+            @Validated(OnAuth.class) @RequestBody @NotNull UserDto userDto,
+            @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
         String token = userService.generateToken(userDto);
         return ResponseEntity.ok(new TokenModel(token));
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserModel> createUser(
-            @Validated(OnCreate.class) @RequestBody UserDto userDto,
-            final BindingResult bindingResult) {
+    public @NotNull ResponseEntity<UserModel> createUser(
+            @Validated(OnCreate.class) @RequestBody @NotNull UserDto userDto,
+            @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
         UserModel createdUser = new UserModel(userService.createUser(userDto));
         return ResponseEntity.ok(createdUser);
@@ -46,7 +47,7 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/")
-    public ResponseEntity<List<UserModel>> getAllUser(
+    public @NotNull ResponseEntity<List<UserModel>> getAllUser(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         List<UserModel> userModelList = userService.getUserList(page, size).stream()
@@ -57,16 +58,17 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/")
-    public ResponseEntity<Object> deleteAnyUser(@RequestParam("username") String username) {
+    public @NotNull ResponseEntity<Object> deleteAnyUser(
+            @RequestParam("username") @NotNull String username) {
         userService.softDeleteUser(username);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/role")
-    public ResponseEntity<UserModel> updateAnyUserRole(
+    public @NotNull ResponseEntity<UserModel> updateAnyUserRole(
             @RequestParam("username") String username,
-            @RequestParam("roles") Set<UserRole> roles) {
+            @RequestParam("roles") @NotNull Set<UserRole> roles) {
         UserModel userModel = new UserModel(userService.updateUserRole(username, roles));
         return ResponseEntity.ok(userModel);
     }
