@@ -1,34 +1,30 @@
-package com.tonghoangvu.lhufriends.model;
+package com.tonghoangvu.lhufriends.dto.response;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
 import com.tonghoangvu.lhufriends.entity.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.Set;
 
 @Getter
-@Setter
-@NoArgsConstructor
-public class UserModel {
-    private Date createdAt;
-    private Date updatedAt;
-    private Set<UserRole> roles;
-    private boolean deleted;
+public class UserInfoDto {
+    private final Date createdAt;
+    private final Date updatedAt;
+    private final Set<UserRole> roles;
+    private final boolean deleted;
 
-    private String username;
-    private String displayName;
-    private Gender gender;
-    private String bio;
-    private Date birthday;
-    private String email;
-    private String phone;
+    private final String username;
+    private final String displayName;
+    private final Gender gender;
+    private final String bio;
+    private final Date birthday;
+    private final String email;
+    private final String phone;
 
-    public UserModel(@NotNull User entity) {
+    public UserInfoDto(@NotNull User entity) {
         this.createdAt = entity.getCreatedAt();
         this.updatedAt = entity.getUpdatedAt();
         this.roles = entity.getRoles();

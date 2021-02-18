@@ -1,8 +1,9 @@
 package com.tonghoangvu.lhufriends.service;
 
-import com.tonghoangvu.lhufriends.dto.UpsertDto;
 import com.tonghoangvu.lhufriends.entity.Student;
-import com.tonghoangvu.lhufriends.model.UpsertModel;
+import com.tonghoangvu.lhufriends.model.request.StudentFilter;
+import com.tonghoangvu.lhufriends.model.request.UpsertRequest;
+import com.tonghoangvu.lhufriends.model.response.UpsertResponse;
 import com.tonghoangvu.lhufriends.repository.CustomStudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -16,16 +17,14 @@ import java.util.List;
 public class StudentService {
     private final @NotNull CustomStudentRepository customStudentRepository;
 
-    public UpsertModel upsertStudentList(@NotNull UpsertDto upsertDto) {
+    public @NotNull UpsertResponse upsertStudentList(@NotNull UpsertRequest upsertRequest) {
         long startTime = new Date().getTime();
-        long upserted = customStudentRepository.upsertStudentList(upsertDto.getData());
-        return UpsertModel.builder()
-                .time(new Date().getTime() - startTime)
-                .upserted(upserted)
-                .build();
+        long upsertedCount = customStudentRepository.upsertStudentList(upsertRequest.getData());
+        return new UpsertResponse(new Date().getTime() - startTime, upsertedCount);
     }
 
-    public @NotNull List<Student> getStudentList(@NotNull Student studentFilter, int page, int size) {
+    public @NotNull List<Student> getStudentList(
+            @NotNull StudentFilter studentFilter, int page, int size) {
         List<Student> studentList = customStudentRepository
                 .findAllWithFilterAndPagination(studentFilter, page, size);
         if (studentFilter.getPhone() == null || studentFilter.getPhone().isEmpty())

@@ -1,8 +1,10 @@
 package com.tonghoangvu.lhufriends.service;
 
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.dto.UserDto;
+import com.tonghoangvu.lhufriends.dto.request.UserRequestDto;
 import com.tonghoangvu.lhufriends.entity.User;
+import com.tonghoangvu.lhufriends.model.request.TokenRequest;
+import com.tonghoangvu.lhufriends.model.response.TokenResponse;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -40,25 +42,25 @@ public class UserService {
         return user;
     }
 
-    public String generateToken(@NotNull UserDto userDto) {
+    public @NotNull TokenResponse generateToken(@NotNull TokenRequest tokenRequest) {
         // Load existed user details
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(tokenRequest.getUsername());
 
         // Modify BadCredentialsException message
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            userDto.getUsername(), userDto.getPassword()));
+                            tokenRequest.getUsername(), tokenRequest.getPassword()));
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Username and password do not match");
         }
 
         // Generate access token
-        return jwtTokenService.generateToken(userDetails);
+        String token = jwtTokenService.generateToken(userDetails);
+        return new TokenResponse(token);
     }
 
-    public @NotNull User createUser(@NotNull UserDto userDto) {
-        User user = new User(userDto);
+    public @NotNull User createUser(@NotNull User user) {
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -76,25 +78,25 @@ public class UserService {
         return getUserOrExitWithException(username);
     }
 
-    public @NotNull User updateUser(String username, @NotNull UserDto userDto) {
+    public @NotNull User updateUser(String username, @NotNull UserRequestDto userRequestDto) {
         User user = getUserOrExitWithException(username);
 
         // Update not null fields (exclude password)
         // Required fields are not allow empty value, but optional fields can be set empty value
-        if (userDto.getUsername() != null)
-            user.setUsername(userDto.getUsername());
-        if (userDto.getDisplayName() != null)
-            user.setDisplayName(userDto.getDisplayName());
-        if (userDto.getGender() != null)
-            user.setGender(userDto.getGender());
-        if (userDto.getBio() != null)
-            user.setBio(userDto.getBio());
-        if (userDto.getBirthday() != null)
-            user.setBirthday(userDto.getBirthday());
-        if (userDto.getEmail() != null)
-            user.setEmail(userDto.getEmail());
-        if (userDto.getPhone() != null)
-            user.setPhone(userDto.getPhone());
+        if (userRequestDto.getUsername() != null)
+            user.setUsername(userRequestDto.getUsername());
+        if (userRequestDto.getDisplayName() != null)
+            user.setDisplayName(userRequestDto.getDisplayName());
+        if (userRequestDto.getGender() != null)
+            user.setGender(userRequestDto.getGender());
+        if (userRequestDto.getBio() != null)
+            user.setBio(userRequestDto.getBio());
+        if (userRequestDto.getBirthday() != null)
+            user.setBirthday(userRequestDto.getBirthday());
+        if (userRequestDto.getEmail() != null)
+            user.setEmail(userRequestDto.getEmail());
+        if (userRequestDto.getPhone() != null)
+            user.setPhone(userRequestDto.getPhone());
 
         user.setUpdatedAt(new Date());
         return userRepository.save(user);

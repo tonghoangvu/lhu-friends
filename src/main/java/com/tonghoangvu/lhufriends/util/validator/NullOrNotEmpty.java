@@ -13,7 +13,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = NullOrNotEmptyValidator.class)
 public @interface NullOrNotEmpty {
-    @NotNull String message() default "{javax.validation.constraints.Pattern.message}";
+    @NotNull String message() default "{ javax.validation.constraints.Pattern.message }";
+
     @NotNull Class<?> @NotNull [] groups() default {};
 }
 

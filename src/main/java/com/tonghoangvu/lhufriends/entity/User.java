@@ -2,7 +2,7 @@ package com.tonghoangvu.lhufriends.entity;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.dto.UserDto;
+import com.tonghoangvu.lhufriends.dto.request.UserRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,14 +32,14 @@ public class User {
     private String email;
     private String phone;
 
-    public User(@NotNull UserDto userDto) {
-        this.username = userDto.getUsername();
-        this.password = userDto.getPassword();
-        this.displayName = userDto.getDisplayName();
-        this.gender = userDto.getGender();
-        this.bio = userDto.getBio();
-        this.birthday = userDto.getBirthday();
-        this.email = userDto.getEmail();
-        this.phone = userDto.getPhone();
+    public User(@NotNull UserRequestDto userRequestDto) {
+        this.username = userRequestDto.getUsername();
+        this.password = userRequestDto.getPassword();
+        this.displayName = userRequestDto.getDisplayName();
+        this.gender = userRequestDto.getGender();
+        this.bio = userRequestDto.getBio();
+        this.birthday = userRequestDto.getBirthday();
+        this.email = userRequestDto.getEmail();
+        this.phone = userRequestDto.getPhone();
     }
 }

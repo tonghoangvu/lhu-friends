@@ -2,8 +2,9 @@ package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.ValidationProfiles;
 import com.tonghoangvu.lhufriends.component.AuthenticationFacade;
-import com.tonghoangvu.lhufriends.dto.UserDto;
-import com.tonghoangvu.lhufriends.model.UserModel;
+import com.tonghoangvu.lhufriends.dto.request.UserRequestDto;
+import com.tonghoangvu.lhufriends.dto.response.UserInfoDto;
+import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.service.UserService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,21 +24,23 @@ public class AccountController {
 
     @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/")
-    public @NotNull ResponseEntity<UserModel> getMyAccountInfo() {
+    public @NotNull ResponseEntity<UserInfoDto> getMyAccountInfo() {
         String myUsername = authenticationFacade.getUsername();
-        UserModel myUser = new UserModel(userService.getUser(myUsername));
-        return ResponseEntity.ok(myUser);
+        User myUser = userService.getUser(myUsername);
+        UserInfoDto myUserInfoDto = new UserInfoDto(myUser);
+        return ResponseEntity.ok(myUserInfoDto);
     }
 
     @PreAuthorize("hasAnyRole('USER')")
     @PutMapping("/")
-    public @NotNull ResponseEntity<UserModel> updateMyAccount(
-            @Validated(ValidationProfiles.OnUpdate.class) @RequestBody @NotNull UserDto userDto,
+    public @NotNull ResponseEntity<UserInfoDto> updateMyAccount(
+            @Validated(ValidationProfiles.OnUpdate.class) @RequestBody @NotNull UserRequestDto userRequestDto,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
         String myUsername = authenticationFacade.getUsername();
-        UserModel updatedUser = new UserModel(userService.updateUser(myUsername, userDto));
-        return ResponseEntity.ok(updatedUser);
+        User myUser = userService.updateUser(myUsername, userRequestDto);
+        UserInfoDto myUserInfoDto = new UserInfoDto(myUser);
+        return ResponseEntity.ok(myUserInfoDto);
     }
 
     @PreAuthorize("hasAnyRole('USER')")

@@ -1,4 +1,4 @@
-package com.tonghoangvu.lhufriends.dto;
+package com.tonghoangvu.lhufriends.dto.request;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.util.validator.NullOrNotEmpty;
@@ -16,7 +16,7 @@ import static com.tonghoangvu.lhufriends.common.ValidationProfiles.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDto {
+public class UserRequestDto {
     @NotEmpty(message = "Username is required", groups = { OnAuth.class, OnCreate.class })
     @NullOrNotEmpty(message = "Username is required", groups = { OnUpdate.class })
     private String username;

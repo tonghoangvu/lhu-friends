@@ -1,8 +1,8 @@
 package com.tonghoangvu.lhufriends.repository;
 
 import com.mongodb.bulk.BulkWriteResult;
-import com.tonghoangvu.lhufriends.dto.StudentDto;
 import com.tonghoangvu.lhufriends.entity.Student;
+import com.tonghoangvu.lhufriends.model.request.StudentFilter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
@@ -26,48 +26,48 @@ public class CustomStudentRepository {
         return Criteria.where(field).regex(value, "i");
     }
 
-    public int upsertStudentList(@NotNull List<StudentDto> studentDtoList) {
+    public int upsertStudentList(@NotNull List<Student> studentList) {
         // Create a list of bulk operations
         BulkOperations bulkOps = mongoOperations.bulkOps(
                 BulkOperations.BulkMode.UNORDERED, Student.class);
 
-        for (StudentDto studentDto: studentDtoList) {
-            // Update not null DTO fields
+        for (Student student : studentList) {
+            // Update not null fields
             Update update = new Update()
                     .currentDate("updatedAt")
                     .setOnInsert("createdAt", new Date());
-            if (studentDto.getStudentId() != null)
-                update.set("studentId", studentDto.getStudentId());
-            if (studentDto.getFullName() != null)
-                update.set("fullName", studentDto.getFullName());
-            if (studentDto.getBirthday() != null)
-                update.set("birthday", studentDto.getBirthday());
-            if (studentDto.getGender() != null)
-                update.set("gender", studentDto.getGender());
-            if (studentDto.getPlaceOfBirth() != null)
-                update.set("placeOfBirth", studentDto.getPlaceOfBirth());
-            if (studentDto.getEthnic() != null)
-                update.set("ethnic", studentDto.getEthnic());
-            if (studentDto.getNationality() != null)
-                update.set("nationality", studentDto.getNationality());
-            if (studentDto.getClassId() != null)
-                update.set("classId", studentDto.getClassId());
-            if (studentDto.getImage() != null)
-                update.set("image", studentDto.getImage());
-            if (studentDto.getAvatar() != null)
-                update.set("avatar", studentDto.getAvatar());
-            if (studentDto.getUserName() != null)
-                update.set("userName", studentDto.getUserName());
-            if (studentDto.getEmail() != null)
-                update.set("email", studentDto.getEmail());
-            if (studentDto.getPhone() != null)
-                update.set("phone", studentDto.getPhone());
-            if (studentDto.getGroupName() != null)
-                update.set("groupName", studentDto.getGroupName());
-            if (studentDto.getFacebook() != null)
-                update.set("facebook", studentDto.getFacebook());
+            if (student.getStudentId() != null)
+                update.set("studentId", student.getStudentId());
+            if (student.getFullName() != null)
+                update.set("fullName", student.getFullName());
+            if (student.getBirthday() != null)
+                update.set("birthday", student.getBirthday());
+            if (student.getGender() != null)
+                update.set("gender", student.getGender());
+            if (student.getPlaceOfBirth() != null)
+                update.set("placeOfBirth", student.getPlaceOfBirth());
+            if (student.getEthnic() != null)
+                update.set("ethnic", student.getEthnic());
+            if (student.getNationality() != null)
+                update.set("nationality", student.getNationality());
+            if (student.getClassId() != null)
+                update.set("classId", student.getClassId());
+            if (student.getImage() != null)
+                update.set("image", student.getImage());
+            if (student.getAvatar() != null)
+                update.set("avatar", student.getAvatar());
+            if (student.getUserName() != null)
+                update.set("userName", student.getUserName());
+            if (student.getEmail() != null)
+                update.set("email", student.getEmail());
+            if (student.getPhone() != null)
+                update.set("phone", student.getPhone());
+            if (student.getGroupName() != null)
+                update.set("groupName", student.getGroupName());
+            if (student.getFacebook() != null)
+                update.set("facebook", student.getFacebook());
 
-            Query query = new Query(Criteria.where("studentId").is(studentDto.getStudentId()));
+            Query query = new Query(Criteria.where("studentId").is(student.getStudentId()));
             bulkOps.upsert(query, update);
         }
 
@@ -76,7 +76,7 @@ public class CustomStudentRepository {
     }
 
     public @NotNull List<Student> findAllWithFilterAndPagination(
-            @NotNull Student studentFilter, int page, int size) {
+            @NotNull StudentFilter studentFilter, int page, int size) {
         // Build query
         Query query = new Query();
         query.with(Sort.by("studentId").descending());

@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,11 +27,11 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Value("${com.app.ALLOW_ORIGINS}")
-    private List<String> ALLOW_ORIGINS;
-
     private final @NotNull UserDetailsService userDetailsService;
     private final @NotNull JwtRequestFilter jwtRequestFilter;
+
+    @Value("${com.app.ALLOW_ORIGINS}")
+    private List<String> ALLOW_ORIGINS;
 
     @Override
     protected void configure(@NotNull AuthenticationManagerBuilder auth) throws Exception {
@@ -48,11 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                    // Disable auto authorize requests, using custom @PreAuthorize instead
-                    .anyRequest().permitAll()
-                    .and()
+                // Disable auto authorize requests, using custom @PreAuthorize instead
+                .anyRequest().permitAll()
+                .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -66,12 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 
     @Bean
