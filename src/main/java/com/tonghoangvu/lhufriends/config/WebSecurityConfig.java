@@ -68,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    // This bean is required, don't remove it
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

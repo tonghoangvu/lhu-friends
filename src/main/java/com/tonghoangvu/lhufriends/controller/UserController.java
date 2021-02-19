@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnAuth;
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
 
 @RestController
@@ -31,10 +30,9 @@ public class UserController {
 
     @PostMapping("/auth")
     public @NotNull ResponseEntity<TokenResponse> authenticate(
-            @Validated(OnAuth.class) @RequestBody @NotNull UserRequest userRequest,
+            @RequestBody @NotNull TokenRequest tokenRequest,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
-        TokenRequest tokenRequest = new TokenRequest(userRequest);
         TokenResponse tokenResponse = userService.generateToken(tokenRequest);
         return ResponseEntity.ok(tokenResponse);
     }

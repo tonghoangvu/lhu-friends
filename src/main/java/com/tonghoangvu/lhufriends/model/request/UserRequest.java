@@ -10,16 +10,17 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
-import static com.tonghoangvu.lhufriends.common.ValidationProfiles.*;
+import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
+import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnUpdate;
 
 @Getter
 @Setter
 public class UserRequest {
-    @NotEmpty(message = "Username is required", groups = { OnAuth.class, OnCreate.class })
+    @NotEmpty(message = "Username is required", groups = { OnCreate.class })
     @NullOrNotEmpty(message = "Username is required", groups = { OnUpdate.class })
     private String username;
 
-    @NotEmpty(message = "Password is required", groups = { OnAuth.class, OnCreate.class })
+    @NotEmpty(message = "Password is required", groups = { OnCreate.class })
     @Min(value = 8, message = "Password must be longer than 8 letters")
     private String password;
 
