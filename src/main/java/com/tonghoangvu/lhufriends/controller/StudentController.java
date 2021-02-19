@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class StudentController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/upsert")
     public @NotNull ResponseEntity<UpsertResponse> upsertStudentList(
-            @RequestBody @NotNull UpsertRequest upsertRequest,
+            @Valid @RequestBody @NotNull UpsertRequest upsertRequest,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
         UpsertResponse upsertResponse = studentService.upsertStudentList(upsertRequest);
