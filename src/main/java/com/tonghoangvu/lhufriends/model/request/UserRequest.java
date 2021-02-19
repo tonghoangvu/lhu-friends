@@ -3,7 +3,6 @@ package com.tonghoangvu.lhufriends.model.request;
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.util.validator.NullOrNotEmpty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -15,7 +14,6 @@ import static com.tonghoangvu.lhufriends.common.ValidationProfiles.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class UserRequest {
     @NotEmpty(message = "Username is required", groups = { OnAuth.class, OnCreate.class })
     @NullOrNotEmpty(message = "Username is required", groups = { OnUpdate.class })

@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.Set;
 
-@Document(collection = "users")
 @Getter
 @Setter
 @NoArgsConstructor
+@Document(collection = "users")
 public class UserEntity {
     private String id;
     private Date createdAt;
