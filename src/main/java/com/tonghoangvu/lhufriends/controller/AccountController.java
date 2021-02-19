@@ -2,7 +2,7 @@ package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.ValidationProfiles;
 import com.tonghoangvu.lhufriends.component.AuthenticationFacade;
-import com.tonghoangvu.lhufriends.entity.User;
+import com.tonghoangvu.lhufriends.entity.UserEntity;
 import com.tonghoangvu.lhufriends.model.request.UserRequest;
 import com.tonghoangvu.lhufriends.model.response.UserInfo;
 import com.tonghoangvu.lhufriends.service.UserService;
@@ -26,8 +26,8 @@ public class AccountController {
     @GetMapping("/")
     public @NotNull ResponseEntity<UserInfo> getMyAccountInfo() {
         String myUsername = authenticationFacade.getUsername();
-        User myUser = userService.getUser(myUsername);
-        UserInfo myUserInfo = new UserInfo(myUser);
+        UserEntity myUserEntity = userService.getUser(myUsername);
+        UserInfo myUserInfo = new UserInfo(myUserEntity);
         return ResponseEntity.ok(myUserInfo);
     }
 
@@ -38,8 +38,8 @@ public class AccountController {
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
         String myUsername = authenticationFacade.getUsername();
-        User myUser = userService.updateUser(myUsername, userRequest);
-        UserInfo myUserInfo = new UserInfo(myUser);
+        UserEntity myUserEntity = userService.updateUser(myUsername, userRequest);
+        UserInfo myUserInfo = new UserInfo(myUserEntity);
         return ResponseEntity.ok(myUserInfo);
     }
 

@@ -1,6 +1,6 @@
 package com.tonghoangvu.lhufriends.model;
 
-import com.tonghoangvu.lhufriends.entity.Student;
+import com.tonghoangvu.lhufriends.entity.StudentEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
@@ -29,7 +29,7 @@ public class StudentItem {
     private String facebook;
 
     @Contract(pure = true)
-    public StudentItem(@NotNull Student entity) {
+    public StudentItem(@NotNull StudentEntity entity) {
         this.studentId = entity.getStudentId();
         this.fullName = entity.getFullName();
         this.birthday = entity.getBirthday();

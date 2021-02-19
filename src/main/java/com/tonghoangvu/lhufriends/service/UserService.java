@@ -1,7 +1,7 @@
 package com.tonghoangvu.lhufriends.service;
 
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.entity.User;
+import com.tonghoangvu.lhufriends.entity.UserEntity;
 import com.tonghoangvu.lhufriends.model.request.TokenRequest;
 import com.tonghoangvu.lhufriends.model.request.UserRequest;
 import com.tonghoangvu.lhufriends.model.response.TokenResponse;
@@ -35,11 +35,11 @@ public class UserService {
 
     private final @NotNull UserRepository userRepository;
 
-    private @NotNull User getUserOrExitWithException(String username) {
-        User user = userRepository.findFirstByUsername(username);
-        if (user == null)
+    private @NotNull UserEntity getUserOrExitWithException(String username) {
+        UserEntity userEntity = userRepository.findFirstByUsername(username);
+        if (userEntity == null)
             throw new UsernameNotFoundException("Username not found");
-        return user;
+        return userEntity;
     }
 
     public @NotNull TokenResponse generateToken(@NotNull TokenRequest tokenRequest) {
@@ -60,60 +60,60 @@ public class UserService {
         return new TokenResponse(token);
     }
 
-    public @NotNull User createUser(@NotNull UserRequest userRequest) {
-        User user = new User(userRequest);
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(UserRole.ROLE_USER));
-        user.setDeleted(false);
-        return userRepository.save(user);
+    public @NotNull UserEntity createUser(@NotNull UserRequest userRequest) {
+        UserEntity userEntity = new UserEntity(userRequest);
+        userEntity.setCreatedAt(new Date());
+        userEntity.setUpdatedAt(new Date());
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setRoles(Collections.singleton(UserRole.ROLE_USER));
+        userEntity.setDeleted(false);
+        return userRepository.save(userEntity);
     }
 
-    public @NotNull List<User> getUserList(int page, int size) {
-        Page<User> userInPage = userRepository.findAll(PageRequest.of(page, size));
+    public @NotNull List<UserEntity> getUserList(int page, int size) {
+        Page<UserEntity> userInPage = userRepository.findAll(PageRequest.of(page, size));
         return userInPage.toList();
     }
 
-    public @NotNull User getUser(String username) {
+    public @NotNull UserEntity getUser(String username) {
         return getUserOrExitWithException(username);
     }
 
-    public @NotNull User updateUser(String username, @NotNull UserRequest userRequest) {
-        User user = getUserOrExitWithException(username);
+    public @NotNull UserEntity updateUser(String username, @NotNull UserRequest userRequest) {
+        UserEntity userEntity = getUserOrExitWithException(username);
 
         // Update not null fields (exclude password)
         // Required fields are not allow empty value, but optional fields can be set empty value
         if (userRequest.getUsername() != null)
-            user.setUsername(userRequest.getUsername());
+            userEntity.setUsername(userRequest.getUsername());
         if (userRequest.getDisplayName() != null)
-            user.setDisplayName(userRequest.getDisplayName());
+            userEntity.setDisplayName(userRequest.getDisplayName());
         if (userRequest.getGender() != null)
-            user.setGender(userRequest.getGender());
+            userEntity.setGender(userRequest.getGender());
         if (userRequest.getBio() != null)
-            user.setBio(userRequest.getBio());
+            userEntity.setBio(userRequest.getBio());
         if (userRequest.getBirthday() != null)
-            user.setBirthday(userRequest.getBirthday());
+            userEntity.setBirthday(userRequest.getBirthday());
         if (userRequest.getEmail() != null)
-            user.setEmail(userRequest.getEmail());
+            userEntity.setEmail(userRequest.getEmail());
         if (userRequest.getPhone() != null)
-            user.setPhone(userRequest.getPhone());
+            userEntity.setPhone(userRequest.getPhone());
 
-        user.setUpdatedAt(new Date());
-        return userRepository.save(user);
+        userEntity.setUpdatedAt(new Date());
+        return userRepository.save(userEntity);
     }
 
     public void softDeleteUser(String username) {
-        User user = getUserOrExitWithException(username);
-        user.setDeleted(true);
-        user.setUpdatedAt(new Date());
-        userRepository.save(user);
+        UserEntity userEntity = getUserOrExitWithException(username);
+        userEntity.setDeleted(true);
+        userEntity.setUpdatedAt(new Date());
+        userRepository.save(userEntity);
     }
 
-    public @NotNull User updateUserRole(String username, @NotNull Set<UserRole> roles) {
-        User user = getUserOrExitWithException(username);
-        user.setRoles(roles);
-        user.setUpdatedAt(new Date());
-        return userRepository.save(user);
+    public @NotNull UserEntity updateUserRole(String username, @NotNull Set<UserRole> roles) {
+        UserEntity userEntity = getUserOrExitWithException(username);
+        userEntity.setRoles(roles);
+        userEntity.setUpdatedAt(new Date());
+        return userRepository.save(userEntity);
     }
 }

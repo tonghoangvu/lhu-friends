@@ -1,7 +1,7 @@
 package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.entity.User;
+import com.tonghoangvu.lhufriends.entity.UserEntity;
 import com.tonghoangvu.lhufriends.model.request.TokenRequest;
 import com.tonghoangvu.lhufriends.model.request.UserRequest;
 import com.tonghoangvu.lhufriends.model.response.TokenResponse;
@@ -44,8 +44,8 @@ public class UserController {
             @Validated(OnCreate.class) @RequestBody @NotNull UserRequest userRequest,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
-        User createdUser = userService.createUser(userRequest);
-        UserInfo userInfo = new UserInfo(createdUser);
+        UserEntity createdUserEntity = userService.createUser(userRequest);
+        UserInfo userInfo = new UserInfo(createdUserEntity);
         return ResponseEntity.ok(userInfo);
     }
 
@@ -54,8 +54,8 @@ public class UserController {
     public @NotNull ResponseEntity<List<UserInfo>> getAllUser(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) {
-        List<User> userList = userService.getUserList(page, size);
-        List<UserInfo> userInfoList = userList.stream()
+        List<UserEntity> userEntityList = userService.getUserList(page, size);
+        List<UserInfo> userInfoList = userEntityList.stream()
                 .map(UserInfo::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userInfoList);
@@ -74,8 +74,8 @@ public class UserController {
     public @NotNull ResponseEntity<UserInfo> updateAnyUserRole(
             @RequestParam("username") String username,
             @RequestParam("roles") @NotNull Set<UserRole> roles) {
-        User user = userService.updateUserRole(username, roles);
-        UserInfo userInfo = new UserInfo(user);
+        UserEntity userEntity = userService.updateUserRole(username, roles);
+        UserInfo userInfo = new UserInfo(userEntity);
         return ResponseEntity.ok(userInfo);
     }
 }

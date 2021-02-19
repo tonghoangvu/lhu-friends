@@ -2,7 +2,7 @@ package com.tonghoangvu.lhufriends.model.response;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.entity.User;
+import com.tonghoangvu.lhufriends.entity.UserEntity;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,7 @@ public class UserInfo {
     private final String email;
     private final String phone;
 
-    public UserInfo(@NotNull User entity) {
+    public UserInfo(@NotNull UserEntity entity) {
         this.createdAt = entity.getCreatedAt();
         this.updatedAt = entity.getUpdatedAt();
         this.roles = entity.getRoles();

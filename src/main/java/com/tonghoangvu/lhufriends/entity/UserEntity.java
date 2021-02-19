@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class UserEntity {
     private String id;
     private Date createdAt;
     private Date updatedAt;
@@ -32,7 +32,7 @@ public class User {
     private String email;
     private String phone;
 
-    public User(@NotNull UserRequest userRequest) {
+    public UserEntity(@NotNull UserRequest userRequest) {
         this.username = userRequest.getUsername();
         this.password = userRequest.getPassword();
         this.displayName = userRequest.getDisplayName();

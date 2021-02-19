@@ -2,7 +2,7 @@ package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.Const;
 import com.tonghoangvu.lhufriends.common.ErrorCode;
-import com.tonghoangvu.lhufriends.entity.Student;
+import com.tonghoangvu.lhufriends.entity.StudentEntity;
 import com.tonghoangvu.lhufriends.exception.AppException;
 import com.tonghoangvu.lhufriends.model.StudentItem;
 import com.tonghoangvu.lhufriends.model.request.StudentFilter;
@@ -46,8 +46,8 @@ public class StudentController {
         if (size > Const.MAX_STUDENTS_PER_REQUEST.getIntValue())
             throw new AppException(HttpStatus.BAD_REQUEST, ErrorCode.REQUEST_TOO_MANY,
                     "Max students per request is " + Const.MAX_STUDENTS_PER_REQUEST.getIntValue());
-        List<Student> studentList = studentService.getStudentList(studentFilter, page, size);
-        List<StudentItem> studentItemList = studentList.stream()
+        List<StudentEntity> studentEntityList = studentService.getStudentList(studentFilter, page, size);
+        List<StudentItem> studentItemList = studentEntityList.stream()
                 .map(StudentItem::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(studentItemList);

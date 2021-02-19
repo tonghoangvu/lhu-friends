@@ -1,7 +1,7 @@
 package com.tonghoangvu.lhufriends.repository;
 
 import com.mongodb.bulk.BulkWriteResult;
-import com.tonghoangvu.lhufriends.entity.Student;
+import com.tonghoangvu.lhufriends.entity.StudentEntity;
 import com.tonghoangvu.lhufriends.model.StudentItem;
 import com.tonghoangvu.lhufriends.model.request.StudentFilter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class CustomStudentRepository {
     public int upsertStudentList(@NotNull List<StudentItem> studentItemList) {
         // Create a list of bulk operations
         BulkOperations bulkOps = mongoOperations.bulkOps(
-                BulkOperations.BulkMode.UNORDERED, Student.class);
+                BulkOperations.BulkMode.UNORDERED, StudentEntity.class);
 
         for (StudentItem studentItem : studentItemList) {
             // Update not null fields
@@ -76,7 +76,7 @@ public class CustomStudentRepository {
         return result.getModifiedCount() + result.getUpserts().size();
     }
 
-    public @NotNull List<Student> findAllWithFilterAndPagination(
+    public @NotNull List<StudentEntity> findAllWithFilterAndPagination(
             @NotNull StudentFilter studentFilter, int page, int size) {
         // Build query
         Query query = new Query();
@@ -110,6 +110,6 @@ public class CustomStudentRepository {
             query.addCriteria(regexCriteria("phone", studentFilter.getPhone()));
 
         // Query
-        return mongoOperations.find(query, Student.class);
+        return mongoOperations.find(query, StudentEntity.class);
     }
 }

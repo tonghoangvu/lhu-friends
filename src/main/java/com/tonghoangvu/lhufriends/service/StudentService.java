@@ -1,6 +1,6 @@
 package com.tonghoangvu.lhufriends.service;
 
-import com.tonghoangvu.lhufriends.entity.Student;
+import com.tonghoangvu.lhufriends.entity.StudentEntity;
 import com.tonghoangvu.lhufriends.model.request.StudentFilter;
 import com.tonghoangvu.lhufriends.model.request.UpsertRequest;
 import com.tonghoangvu.lhufriends.model.response.UpsertResponse;
@@ -23,12 +23,12 @@ public class StudentService {
         return new UpsertResponse(new Date().getTime() - startTime, upsertedCount);
     }
 
-    public @NotNull List<Student> getStudentList(
+    public @NotNull List<StudentEntity> getStudentList(
             @NotNull StudentFilter studentFilter, int page, int size) {
-        List<Student> studentList = customStudentRepository
+        List<StudentEntity> studentEntityList = customStudentRepository
                 .findAllWithFilterAndPagination(studentFilter, page, size);
         if (studentFilter.getPhone() == null || studentFilter.getPhone().isEmpty())
-            studentList.forEach(student -> student.setPhone(null));
-        return studentList;
+            studentEntityList.forEach(student -> student.setPhone(null));
+        return studentEntityList;
     }
 }
