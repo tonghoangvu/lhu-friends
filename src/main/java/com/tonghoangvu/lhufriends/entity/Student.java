@@ -1,6 +1,6 @@
 package com.tonghoangvu.lhufriends.entity;
 
-import com.tonghoangvu.lhufriends.dto.StudentDto;
+import com.tonghoangvu.lhufriends.model.StudentItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,7 +34,7 @@ public class Student {
     private String groupName;
     private String facebook;
 
-    public Student(@NotNull StudentDto dto) {
+    public Student(@NotNull StudentItem dto) {
         this.studentId = dto.getStudentId();
         this.fullName = dto.getFullName();
         this.birthday = dto.getBirthday();

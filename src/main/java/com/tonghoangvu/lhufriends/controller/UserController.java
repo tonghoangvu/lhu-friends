@@ -1,12 +1,11 @@
 package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.dto.request.UserRequestDto;
-import com.tonghoangvu.lhufriends.dto.response.TokenResponseDto;
-import com.tonghoangvu.lhufriends.dto.response.UserInfoDto;
 import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.model.request.TokenRequest;
+import com.tonghoangvu.lhufriends.model.request.UserRequest;
 import com.tonghoangvu.lhufriends.model.response.TokenResponse;
+import com.tonghoangvu.lhufriends.model.response.UserInfo;
 import com.tonghoangvu.lhufriends.service.UserService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,37 +30,35 @@ public class UserController {
     private final @NotNull UserService userService;
 
     @PostMapping("/auth")
-    public @NotNull ResponseEntity<TokenResponseDto> authenticate(
-            @Validated(OnAuth.class) @RequestBody @NotNull UserRequestDto userRequestDto,
+    public @NotNull ResponseEntity<TokenResponse> authenticate(
+            @Validated(OnAuth.class) @RequestBody @NotNull UserRequest userRequest,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
-        TokenRequest tokenRequest = new TokenRequest(userRequestDto.getUsername(), userRequestDto.getPassword());
+        TokenRequest tokenRequest = new TokenRequest(userRequest);
         TokenResponse tokenResponse = userService.generateToken(tokenRequest);
-        TokenResponseDto tokenResponseDto = new TokenResponseDto(tokenResponse);
-        return ResponseEntity.ok(tokenResponseDto);
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @PostMapping("/")
-    public @NotNull ResponseEntity<UserInfoDto> createUser(
-            @Validated(OnCreate.class) @RequestBody @NotNull UserRequestDto userRequestDto,
+    public @NotNull ResponseEntity<UserInfo> createUser(
+            @Validated(OnCreate.class) @RequestBody @NotNull UserRequest userRequest,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
-        User user = new User(userRequestDto);
-        User createdUser = userService.createUser(user);
-        UserInfoDto userInfoDto = new UserInfoDto(createdUser);
-        return ResponseEntity.ok(userInfoDto);
+        User createdUser = userService.createUser(userRequest);
+        UserInfo userInfo = new UserInfo(createdUser);
+        return ResponseEntity.ok(userInfo);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/")
-    public @NotNull ResponseEntity<List<UserInfoDto>> getAllUser(
+    public @NotNull ResponseEntity<List<UserInfo>> getAllUser(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         List<User> userList = userService.getUserList(page, size);
-        List<UserInfoDto> userInfoDtoList = userList.stream()
-                .map(UserInfoDto::new)
+        List<UserInfo> userInfoList = userList.stream()
+                .map(UserInfo::new)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(userInfoDtoList);
+        return ResponseEntity.ok(userInfoList);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -74,11 +71,11 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/role")
-    public @NotNull ResponseEntity<UserInfoDto> updateAnyUserRole(
+    public @NotNull ResponseEntity<UserInfo> updateAnyUserRole(
             @RequestParam("username") String username,
             @RequestParam("roles") @NotNull Set<UserRole> roles) {
         User user = userService.updateUserRole(username, roles);
-        UserInfoDto userInfoDto = new UserInfoDto(user);
-        return ResponseEntity.ok(userInfoDto);
+        UserInfo userInfo = new UserInfo(user);
+        return ResponseEntity.ok(userInfo);
     }
 }

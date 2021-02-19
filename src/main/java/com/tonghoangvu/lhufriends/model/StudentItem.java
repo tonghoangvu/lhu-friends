@@ -1,4 +1,4 @@
-package com.tonghoangvu.lhufriends.dto;
+package com.tonghoangvu.lhufriends.model;
 
 import com.tonghoangvu.lhufriends.entity.Student;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class StudentDto {
+public class StudentItem {
     @Size(min = 9, max = 9, message = "Student id is invalid")
     private String studentId;
     private String fullName;
@@ -29,7 +29,7 @@ public class StudentDto {
     private String facebook;
 
     @Contract(pure = true)
-    public StudentDto(@NotNull Student entity) {
+    public StudentItem(@NotNull Student entity) {
         this.studentId = entity.getStudentId();
         this.fullName = entity.getFullName();
         this.birthday = entity.getBirthday();

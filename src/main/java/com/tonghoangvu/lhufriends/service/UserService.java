@@ -1,9 +1,9 @@
 package com.tonghoangvu.lhufriends.service;
 
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.dto.request.UserRequestDto;
 import com.tonghoangvu.lhufriends.entity.User;
 import com.tonghoangvu.lhufriends.model.request.TokenRequest;
+import com.tonghoangvu.lhufriends.model.request.UserRequest;
 import com.tonghoangvu.lhufriends.model.response.TokenResponse;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +60,8 @@ public class UserService {
         return new TokenResponse(token);
     }
 
-    public @NotNull User createUser(@NotNull User user) {
+    public @NotNull User createUser(@NotNull UserRequest userRequest) {
+        User user = new User(userRequest);
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -78,25 +79,25 @@ public class UserService {
         return getUserOrExitWithException(username);
     }
 
-    public @NotNull User updateUser(String username, @NotNull UserRequestDto userRequestDto) {
+    public @NotNull User updateUser(String username, @NotNull UserRequest userRequest) {
         User user = getUserOrExitWithException(username);
 
         // Update not null fields (exclude password)
         // Required fields are not allow empty value, but optional fields can be set empty value
-        if (userRequestDto.getUsername() != null)
-            user.setUsername(userRequestDto.getUsername());
-        if (userRequestDto.getDisplayName() != null)
-            user.setDisplayName(userRequestDto.getDisplayName());
-        if (userRequestDto.getGender() != null)
-            user.setGender(userRequestDto.getGender());
-        if (userRequestDto.getBio() != null)
-            user.setBio(userRequestDto.getBio());
-        if (userRequestDto.getBirthday() != null)
-            user.setBirthday(userRequestDto.getBirthday());
-        if (userRequestDto.getEmail() != null)
-            user.setEmail(userRequestDto.getEmail());
-        if (userRequestDto.getPhone() != null)
-            user.setPhone(userRequestDto.getPhone());
+        if (userRequest.getUsername() != null)
+            user.setUsername(userRequest.getUsername());
+        if (userRequest.getDisplayName() != null)
+            user.setDisplayName(userRequest.getDisplayName());
+        if (userRequest.getGender() != null)
+            user.setGender(userRequest.getGender());
+        if (userRequest.getBio() != null)
+            user.setBio(userRequest.getBio());
+        if (userRequest.getBirthday() != null)
+            user.setBirthday(userRequest.getBirthday());
+        if (userRequest.getEmail() != null)
+            user.setEmail(userRequest.getEmail());
+        if (userRequest.getPhone() != null)
+            user.setPhone(userRequest.getPhone());
 
         user.setUpdatedAt(new Date());
         return userRepository.save(user);

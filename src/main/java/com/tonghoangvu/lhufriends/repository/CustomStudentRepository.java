@@ -2,6 +2,7 @@ package com.tonghoangvu.lhufriends.repository;
 
 import com.mongodb.bulk.BulkWriteResult;
 import com.tonghoangvu.lhufriends.entity.Student;
+import com.tonghoangvu.lhufriends.model.StudentItem;
 import com.tonghoangvu.lhufriends.model.request.StudentFilter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -26,48 +27,48 @@ public class CustomStudentRepository {
         return Criteria.where(field).regex(value, "i");
     }
 
-    public int upsertStudentList(@NotNull List<Student> studentList) {
+    public int upsertStudentList(@NotNull List<StudentItem> studentItemList) {
         // Create a list of bulk operations
         BulkOperations bulkOps = mongoOperations.bulkOps(
                 BulkOperations.BulkMode.UNORDERED, Student.class);
 
-        for (Student student : studentList) {
+        for (StudentItem studentItem : studentItemList) {
             // Update not null fields
             Update update = new Update()
                     .currentDate("updatedAt")
                     .setOnInsert("createdAt", new Date());
-            if (student.getStudentId() != null)
-                update.set("studentId", student.getStudentId());
-            if (student.getFullName() != null)
-                update.set("fullName", student.getFullName());
-            if (student.getBirthday() != null)
-                update.set("birthday", student.getBirthday());
-            if (student.getGender() != null)
-                update.set("gender", student.getGender());
-            if (student.getPlaceOfBirth() != null)
-                update.set("placeOfBirth", student.getPlaceOfBirth());
-            if (student.getEthnic() != null)
-                update.set("ethnic", student.getEthnic());
-            if (student.getNationality() != null)
-                update.set("nationality", student.getNationality());
-            if (student.getClassId() != null)
-                update.set("classId", student.getClassId());
-            if (student.getImage() != null)
-                update.set("image", student.getImage());
-            if (student.getAvatar() != null)
-                update.set("avatar", student.getAvatar());
-            if (student.getUserName() != null)
-                update.set("userName", student.getUserName());
-            if (student.getEmail() != null)
-                update.set("email", student.getEmail());
-            if (student.getPhone() != null)
-                update.set("phone", student.getPhone());
-            if (student.getGroupName() != null)
-                update.set("groupName", student.getGroupName());
-            if (student.getFacebook() != null)
-                update.set("facebook", student.getFacebook());
+            if (studentItem.getStudentId() != null)
+                update.set("studentId", studentItem.getStudentId());
+            if (studentItem.getFullName() != null)
+                update.set("fullName", studentItem.getFullName());
+            if (studentItem.getBirthday() != null)
+                update.set("birthday", studentItem.getBirthday());
+            if (studentItem.getGender() != null)
+                update.set("gender", studentItem.getGender());
+            if (studentItem.getPlaceOfBirth() != null)
+                update.set("placeOfBirth", studentItem.getPlaceOfBirth());
+            if (studentItem.getEthnic() != null)
+                update.set("ethnic", studentItem.getEthnic());
+            if (studentItem.getNationality() != null)
+                update.set("nationality", studentItem.getNationality());
+            if (studentItem.getClassId() != null)
+                update.set("classId", studentItem.getClassId());
+            if (studentItem.getImage() != null)
+                update.set("image", studentItem.getImage());
+            if (studentItem.getAvatar() != null)
+                update.set("avatar", studentItem.getAvatar());
+            if (studentItem.getUserName() != null)
+                update.set("userName", studentItem.getUserName());
+            if (studentItem.getEmail() != null)
+                update.set("email", studentItem.getEmail());
+            if (studentItem.getPhone() != null)
+                update.set("phone", studentItem.getPhone());
+            if (studentItem.getGroupName() != null)
+                update.set("groupName", studentItem.getGroupName());
+            if (studentItem.getFacebook() != null)
+                update.set("facebook", studentItem.getFacebook());
 
-            Query query = new Query(Criteria.where("studentId").is(student.getStudentId()));
+            Query query = new Query(Criteria.where("studentId").is(studentItem.getStudentId()));
             bulkOps.upsert(query, update);
         }
 

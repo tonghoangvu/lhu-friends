@@ -1,4 +1,4 @@
-package com.tonghoangvu.lhufriends.dto.response;
+package com.tonghoangvu.lhufriends.model.response;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Getter
-public class UserInfoDto {
+public class UserInfo {
     private final Date createdAt;
     private final Date updatedAt;
     private final Set<UserRole> roles;
@@ -24,7 +24,7 @@ public class UserInfoDto {
     private final String email;
     private final String phone;
 
-    public UserInfoDto(@NotNull User entity) {
+    public UserInfo(@NotNull User entity) {
         this.createdAt = entity.getCreatedAt();
         this.updatedAt = entity.getUpdatedAt();
         this.roles = entity.getRoles();
