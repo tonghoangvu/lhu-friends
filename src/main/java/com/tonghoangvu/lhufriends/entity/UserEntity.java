@@ -2,11 +2,9 @@ package com.tonghoangvu.lhufriends.entity;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.model.request.UserRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -31,15 +29,4 @@ public class UserEntity {
     private Date birthday;
     private String email;
     private String phone;
-
-    public UserEntity(@NotNull UserRequest userRequest) {
-        this.username = userRequest.getUsername();
-        this.password = userRequest.getPassword();
-        this.displayName = userRequest.getDisplayName();
-        this.gender = userRequest.getGender();
-        this.bio = userRequest.getBio();
-        this.birthday = userRequest.getBirthday();
-        this.email = userRequest.getEmail();
-        this.phone = userRequest.getPhone();
-    }
 }

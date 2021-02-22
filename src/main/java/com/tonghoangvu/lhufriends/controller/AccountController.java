@@ -9,6 +9,7 @@ import com.tonghoangvu.lhufriends.service.UserService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
 public class AccountController {
+    private final @NotNull ModelMapper modelMapper;
     private final @NotNull AuthenticationFacade authenticationFacade;
     private final @NotNull UserService userService;
 
@@ -27,7 +29,7 @@ public class AccountController {
     public @NotNull ResponseEntity<UserInfo> getMyAccountInfo() {
         String myUsername = authenticationFacade.getUsername();
         UserEntity myUserEntity = userService.getUser(myUsername);
-        UserInfo myUserInfo = new UserInfo(myUserEntity);
+        UserInfo myUserInfo = modelMapper.map(myUserEntity, UserInfo.class);
         return ResponseEntity.ok(myUserInfo);
     }
 
@@ -39,7 +41,7 @@ public class AccountController {
         ControllerUtil.handleBindingError(bindingResult);
         String myUsername = authenticationFacade.getUsername();
         UserEntity myUserEntity = userService.updateUser(myUsername, userRequest);
-        UserInfo myUserInfo = new UserInfo(myUserEntity);
+        UserInfo myUserInfo = modelMapper.map(myUserEntity, UserInfo.class);
         return ResponseEntity.ok(myUserInfo);
     }
 

@@ -12,6 +12,7 @@ import com.tonghoangvu.lhufriends.service.StudentService;
 import com.tonghoangvu.lhufriends.util.ControllerUtil;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/students")
 @RequiredArgsConstructor
 public class StudentController {
+    private final @NotNull ModelMapper modelMapper;
     private final @NotNull StudentService studentService;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -48,7 +50,7 @@ public class StudentController {
                     "Max students per request is " + Const.MAX_STUDENTS_PER_REQUEST.getIntValue());
         List<StudentEntity> studentEntityList = studentService.getStudentList(studentFilter, page, size);
         List<StudentItem> studentItemList = studentEntityList.stream()
-                .map(StudentItem::new)
+                .map(studentEntity -> modelMapper.map(studentEntity, StudentItem.class))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(studentItemList);
     }

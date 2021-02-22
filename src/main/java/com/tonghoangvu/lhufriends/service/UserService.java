@@ -8,6 +8,7 @@ import com.tonghoangvu.lhufriends.model.response.TokenResponse;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final @NotNull ModelMapper modelMapper;
     private final @NotNull AuthenticationManager authenticationManager;
     private final @NotNull PasswordEncoder passwordEncoder;
 
@@ -61,7 +63,7 @@ public class UserService {
     }
 
     public @NotNull UserEntity createUser(@NotNull UserRequest userRequest) {
-        UserEntity userEntity = new UserEntity(userRequest);
+        UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
         userEntity.setCreatedAt(new Date());
         userEntity.setUpdatedAt(new Date());
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));

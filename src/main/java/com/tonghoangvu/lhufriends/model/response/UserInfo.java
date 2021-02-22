@@ -2,40 +2,23 @@ package com.tonghoangvu.lhufriends.model.response;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.entity.UserEntity;
-import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.Set;
 
-@Getter
+@Setter
 public class UserInfo {
-    private final Date createdAt;
-    private final Date updatedAt;
-    private final Set<UserRole> roles;
-    private final boolean deleted;
+    private Date createdAt;
+    private Date updatedAt;
+    private Set<UserRole> roles;
+    private boolean deleted;
 
-    private final String username;
-    private final String displayName;
-    private final Gender gender;
-    private final String bio;
-    private final Date birthday;
-    private final String email;
-    private final String phone;
-
-    public UserInfo(@NotNull UserEntity entity) {
-        this.createdAt = entity.getCreatedAt();
-        this.updatedAt = entity.getUpdatedAt();
-        this.roles = entity.getRoles();
-        this.deleted = entity.isDeleted();
-
-        this.username = entity.getUsername();
-        this.displayName = entity.getDisplayName();
-        this.gender = entity.getGender();
-        this.bio = entity.getBio();
-        this.birthday = entity.getBirthday();
-        this.email = entity.getEmail();
-        this.phone = entity.getPhone();
-    }
+    private String username;
+    private String displayName;
+    private Gender gender;
+    private String bio;
+    private Date birthday;
+    private String email;
+    private String phone;
 }
