@@ -44,7 +44,7 @@ public class SwaggerConfig {
         return new ApiInfo(
                 "lhu-friends",
                 "Tiện ích tìm kiếm bạn bè LHU",
-                "1.0.0",
+                "1.2.0",
                 "/terms-of-service",
                 new Contact(
                         "Tong Hoang Vu",
