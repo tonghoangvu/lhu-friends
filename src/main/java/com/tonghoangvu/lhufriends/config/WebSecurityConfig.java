@@ -2,6 +2,7 @@ package com.tonghoangvu.lhufriends.config;
 
 import com.tonghoangvu.lhufriends.component.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,19 +28,19 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final @NotNull UserDetailsService userDetailsService;
+    private final @NotNull JwtRequestFilter jwtRequestFilter;
+
     @Value("${com.app.ALLOW_ORIGINS}")
     private List<String> ALLOW_ORIGINS;
 
-    private final UserDetailsService userDetailsService;
-    private final JwtRequestFilter jwtRequestFilter;
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(@NotNull AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(@NotNull HttpSecurity http) throws Exception {
         http
                 .cors().and()
                 .csrf().disable()
@@ -47,16 +48,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                    // Disable auto authorize requests, using custom @PreAuthorize instead
-                    .anyRequest().permitAll()
-                    .and()
+                // Disable auto authorize requests, using custom @PreAuthorize instead
+                .anyRequest().permitAll()
+                .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public @NotNull CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedOrigins(ALLOW_ORIGINS);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -67,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    // This bean is required, don't remove it
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -74,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoderBean() {
+    public @NotNull PasswordEncoder passwordEncoderBean() {
         return new BCryptPasswordEncoder();
     }
 }

@@ -2,7 +2,6 @@ package com.tonghoangvu.lhufriends.entity;
 
 import com.tonghoangvu.lhufriends.common.Gender;
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.dto.UserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,11 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.Set;
 
-@Document(collection = "users")
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+@Document(collection = "users")
+public class UserEntity {
     private String id;
     private Date createdAt;
     private Date updatedAt;
@@ -30,15 +29,4 @@ public class User {
     private Date birthday;
     private String email;
     private String phone;
-
-    public User(UserDto userDto) {
-        this.username = userDto.getUsername();
-        this.password = userDto.getPassword();
-        this.displayName = userDto.getDisplayName();
-        this.gender = userDto.getGender();
-        this.bio = userDto.getBio();
-        this.birthday = userDto.getBirthday();
-        this.email = userDto.getEmail();
-        this.phone = userDto.getPhone();
-    }
 }

@@ -1,14 +1,9 @@
-package com.tonghoangvu.lhufriends.dto;
+package com.tonghoangvu.lhufriends.model.request;
 
 import lombok.Getter;
-import lombok.Setter;
-
-import javax.validation.constraints.Size;
 
 @Getter
-@Setter
-public class StudentDto {
-    @Size(min = 9, max = 9, message = "Student id is invalid")
+public class StudentFilter {
     private String studentId;
     private String fullName;
     private String birthday;
@@ -17,11 +12,7 @@ public class StudentDto {
     private String ethnic;
     private String nationality;
     private String classId;
-    private String image;
-    private String avatar;
-    private String userName;
     private String email;
     private String phone;
-    private String groupName;
     private String facebook;
 }

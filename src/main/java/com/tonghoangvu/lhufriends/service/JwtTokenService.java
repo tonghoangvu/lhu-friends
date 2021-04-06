@@ -3,6 +3,7 @@ package com.tonghoangvu.lhufriends.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class JwtTokenService {
                 .getBody();
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
+    public <T> T extractClaim(String token, @NotNull Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
         return claimResolver.apply(claims);
     }
@@ -45,7 +46,7 @@ public class JwtTokenService {
         return expired == null || expired.before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(@NotNull UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
@@ -60,7 +61,7 @@ public class JwtTokenService {
                 .compact();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, @NotNull UserDetails userDetails) {
         final String usernameInToken = extractUsername(token);
         return usernameInToken != null &&
                 usernameInToken.equals(userDetails.getUsername()) &&

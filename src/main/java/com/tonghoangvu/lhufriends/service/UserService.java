@@ -1,10 +1,14 @@
 package com.tonghoangvu.lhufriends.service;
 
 import com.tonghoangvu.lhufriends.common.UserRole;
-import com.tonghoangvu.lhufriends.dto.UserDto;
-import com.tonghoangvu.lhufriends.entity.User;
+import com.tonghoangvu.lhufriends.entity.UserEntity;
+import com.tonghoangvu.lhufriends.model.request.TokenRequest;
+import com.tonghoangvu.lhufriends.model.request.UserRequest;
+import com.tonghoangvu.lhufriends.model.response.TokenResponse;
 import com.tonghoangvu.lhufriends.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,92 +28,94 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
+    private final @NotNull ModelMapper modelMapper;
+    private final @NotNull AuthenticationManager authenticationManager;
+    private final @NotNull PasswordEncoder passwordEncoder;
 
-    private final UserDetailsService userDetailsService;
-    private final JwtTokenService jwtTokenService;
+    private final @NotNull UserDetailsService userDetailsService;
+    private final @NotNull JwtTokenService jwtTokenService;
 
-    private final UserRepository userRepository;
+    private final @NotNull UserRepository userRepository;
 
-    private User getUserOrExitWithException(String username) {
-        User user = userRepository.findFirstByUsername(username);
-        if (user == null)
+    private @NotNull UserEntity getUserOrExitWithException(String username) {
+        UserEntity userEntity = userRepository.findFirstByUsername(username);
+        if (userEntity == null)
             throw new UsernameNotFoundException("Username not found");
-        return user;
+        return userEntity;
     }
 
-    public String generateToken(UserDto userDto) {
+    public @NotNull TokenResponse generateToken(@NotNull TokenRequest tokenRequest) {
         // Load existed user details
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(tokenRequest.getUsername());
 
         // Modify BadCredentialsException message
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            userDto.getUsername(), userDto.getPassword()));
+                            tokenRequest.getUsername(), tokenRequest.getPassword()));
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Username and password do not match");
         }
 
         // Generate access token
-        return jwtTokenService.generateToken(userDetails);
+        String token = jwtTokenService.generateToken(userDetails);
+        return new TokenResponse(token);
     }
 
-    public User createUser(UserDto userDto) {
-        User user = new User(userDto);
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(UserRole.ROLE_USER));
-        user.setDeleted(false);
-        return userRepository.save(user);
+    public @NotNull UserEntity createUser(@NotNull UserRequest userRequest) {
+        UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
+        userEntity.setCreatedAt(new Date());
+        userEntity.setUpdatedAt(new Date());
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setRoles(Collections.singleton(UserRole.ROLE_USER));
+        userEntity.setDeleted(false);
+        return userRepository.save(userEntity);
     }
 
-    public List<User> getUserList(int page, int size) {
-        Page<User> userInPage = userRepository.findAll(PageRequest.of(page, size));
+    public @NotNull List<UserEntity> getUserList(int page, int size) {
+        Page<UserEntity> userInPage = userRepository.findAll(PageRequest.of(page, size));
         return userInPage.toList();
     }
 
-    public User getUser(String username) {
+    public @NotNull UserEntity getUser(String username) {
         return getUserOrExitWithException(username);
     }
 
-    public User updateUser(String username, UserDto userDto) {
-        User user = getUserOrExitWithException(username);
+    public @NotNull UserEntity updateUser(String username, @NotNull UserRequest userRequest) {
+        UserEntity userEntity = getUserOrExitWithException(username);
 
         // Update not null fields (exclude password)
         // Required fields are not allow empty value, but optional fields can be set empty value
-        if (userDto.getUsername() != null)
-            user.setUsername(userDto.getUsername());
-        if (userDto.getDisplayName() != null)
-            user.setDisplayName(userDto.getDisplayName());
-        if (userDto.getGender() != null)
-            user.setGender(userDto.getGender());
-        if (userDto.getBio() != null)
-            user.setBio(userDto.getBio());
-        if (userDto.getBirthday() != null)
-            user.setBirthday(userDto.getBirthday());
-        if (userDto.getEmail() != null)
-            user.setEmail(userDto.getEmail());
-        if (userDto.getPhone() != null)
-            user.setPhone(userDto.getPhone());
+        if (userRequest.getUsername() != null)
+            userEntity.setUsername(userRequest.getUsername());
+        if (userRequest.getDisplayName() != null)
+            userEntity.setDisplayName(userRequest.getDisplayName());
+        if (userRequest.getGender() != null)
+            userEntity.setGender(userRequest.getGender());
+        if (userRequest.getBio() != null)
+            userEntity.setBio(userRequest.getBio());
+        if (userRequest.getBirthday() != null)
+            userEntity.setBirthday(userRequest.getBirthday());
+        if (userRequest.getEmail() != null)
+            userEntity.setEmail(userRequest.getEmail());
+        if (userRequest.getPhone() != null)
+            userEntity.setPhone(userRequest.getPhone());
 
-        user.setUpdatedAt(new Date());
-        return userRepository.save(user);
+        userEntity.setUpdatedAt(new Date());
+        return userRepository.save(userEntity);
     }
 
     public void softDeleteUser(String username) {
-        User user = getUserOrExitWithException(username);
-        user.setDeleted(true);
-        user.setUpdatedAt(new Date());
-        userRepository.save(user);
+        UserEntity userEntity = getUserOrExitWithException(username);
+        userEntity.setDeleted(true);
+        userEntity.setUpdatedAt(new Date());
+        userRepository.save(userEntity);
     }
 
-    public User updateUserRole(String username, Set<UserRole> roles) {
-        User user = getUserOrExitWithException(username);
-        user.setRoles(roles);
-        user.setUpdatedAt(new Date());
-        return userRepository.save(user);
+    public @NotNull UserEntity updateUserRole(String username, @NotNull Set<UserRole> roles) {
+        UserEntity userEntity = getUserOrExitWithException(username);
+        userEntity.setRoles(roles);
+        userEntity.setUpdatedAt(new Date());
+        return userRepository.save(userEntity);
     }
 }
