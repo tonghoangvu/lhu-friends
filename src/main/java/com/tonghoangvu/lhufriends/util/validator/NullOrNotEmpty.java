@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
@@ -15,7 +16,9 @@ import java.lang.annotation.*;
 public @interface NullOrNotEmpty {
     @NotNull String message() default "{ javax.validation.constraints.Pattern.message }";
 
-    @NotNull Class<?> @NotNull [] groups() default {};
+    @NotNull Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }
 
 class NullOrNotEmptyValidator implements ConstraintValidator<NullOrNotEmpty, String> {
