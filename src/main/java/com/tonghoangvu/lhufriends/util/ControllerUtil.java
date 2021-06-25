@@ -1,7 +1,7 @@
 package com.tonghoangvu.lhufriends.util;
 
-import com.tonghoangvu.lhufriends.common.ErrorCode;
 import com.tonghoangvu.lhufriends.exception.AppException;
+import com.tonghoangvu.lhufriends.exception.ErrorCode;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

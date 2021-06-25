@@ -10,8 +10,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
-import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnUpdate;
+import static com.tonghoangvu.lhufriends.common.ValidationProfile.OnCreate;
+import static com.tonghoangvu.lhufriends.common.ValidationProfile.OnUpdate;
 
 @Getter
 public class UserRequest {

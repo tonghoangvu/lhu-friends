@@ -1,9 +1,9 @@
 package com.tonghoangvu.lhufriends.controller;
 
 import com.tonghoangvu.lhufriends.common.Const;
-import com.tonghoangvu.lhufriends.common.ErrorCode;
 import com.tonghoangvu.lhufriends.entity.StudentEntity;
 import com.tonghoangvu.lhufriends.exception.AppException;
+import com.tonghoangvu.lhufriends.exception.ErrorCode;
 import com.tonghoangvu.lhufriends.model.StudentItem;
 import com.tonghoangvu.lhufriends.model.request.StudentFilter;
 import com.tonghoangvu.lhufriends.model.request.UpsertRequest;

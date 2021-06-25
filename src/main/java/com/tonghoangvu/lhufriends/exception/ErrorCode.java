@@ -1,4 +1,4 @@
-package com.tonghoangvu.lhufriends.common;
+package com.tonghoangvu.lhufriends.exception;
 
 public enum ErrorCode {
     BAD_REQUEST,
