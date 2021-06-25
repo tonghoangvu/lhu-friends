@@ -37,13 +37,6 @@ public class UserService {
 
     private final @NotNull UserRepository userRepository;
 
-    private @NotNull UserEntity getUserOrExitWithException(String username) {
-        UserEntity userEntity = userRepository.findFirstByUsername(username);
-        if (userEntity == null)
-            throw new UsernameNotFoundException("Username not found");
-        return userEntity;
-    }
-
     public @NotNull TokenResponse generateToken(@NotNull TokenRequest tokenRequest) {
         // Load existed user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(tokenRequest.getUsername());
@@ -78,11 +71,16 @@ public class UserService {
     }
 
     public @NotNull UserEntity getUser(String username) {
-        return getUserOrExitWithException(username);
+        UserEntity userEntity = userRepository.findFirstByUsername(username);
+        if (userEntity == null)
+            // TODO: Nên ném ra AppException người dùng không tồn tại
+            // Do Username...Exception chỉ trả về Exception level
+            throw new UsernameNotFoundException("Username not found");
+        return userEntity;
     }
 
     public @NotNull UserEntity updateUser(String username, @NotNull UserRequest userRequest) {
-        UserEntity userEntity = getUserOrExitWithException(username);
+        UserEntity userEntity = getUser(username);
 
         // Update not null fields (exclude password)
         // Required fields are not allow empty value, but optional fields can be set empty value
@@ -106,14 +104,14 @@ public class UserService {
     }
 
     public void softDeleteUser(String username) {
-        UserEntity userEntity = getUserOrExitWithException(username);
+        UserEntity userEntity = getUser(username);
         userEntity.setDeleted(true);
         userEntity.setUpdatedAt(new Date());
         userRepository.save(userEntity);
     }
 
     public @NotNull UserEntity updateUserRole(String username, @NotNull Set<UserRole> roles) {
-        UserEntity userEntity = getUserOrExitWithException(username);
+        UserEntity userEntity = getUser(username);
         userEntity.setRoles(roles);
         userEntity.setUpdatedAt(new Date());
         return userRepository.save(userEntity);

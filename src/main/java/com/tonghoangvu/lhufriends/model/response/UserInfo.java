@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Setter
 public class UserInfo {
+    private String id;
     private Date createdAt;
     private Date updatedAt;
     private Set<UserRole> roles;

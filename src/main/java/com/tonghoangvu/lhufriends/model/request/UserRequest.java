@@ -7,6 +7,7 @@ import lombok.Getter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
@@ -19,15 +20,18 @@ public class UserRequest {
     private String username;
 
     @NotEmpty(message = "Password is required", groups = { OnCreate.class })
+    @NullOrNotEmpty(message = "Password is required", groups = { OnUpdate.class })
     @Min(value = 8, message = "Password must be longer than 8 letters")
+    // Nếu null thì @Min không hoạt động, nên không cần OnUpdate
     private String password;
 
     @NotEmpty(message = "Display name is required", groups = { OnCreate.class })
     @NullOrNotEmpty(message = "Display name is required", groups = { OnUpdate.class })
     private String displayName;
 
-    @NotEmpty(message = "Gender is invalid", groups = { OnCreate.class })
+    @NotNull(message = "Gender is invalid", groups = { OnCreate.class })
     // Do not using @NullOrNotEmpty on non-string fields
+    // Nếu không phải String thì sẽ không check @NotEmpty khi null
     private Gender gender;
 
     private String bio;
