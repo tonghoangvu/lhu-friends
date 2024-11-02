@@ -1,6 +1,5 @@
 package com.tonghoangvu.lhufriends.exception;
 
-import com.tonghoangvu.lhufriends.common.ErrorCode;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;

@@ -2,9 +2,9 @@ package com.tonghoangvu.lhufriends.common;
 
 import org.jetbrains.annotations.Contract;
 
-public class ValidationProfiles {
+public class ValidationProfile {
     @Contract(pure = true)
-    private ValidationProfiles() {}
+    private ValidationProfile() {}
 
     public interface OnCreate {}
 

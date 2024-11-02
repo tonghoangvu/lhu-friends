@@ -1,6 +1,6 @@
 package com.tonghoangvu.lhufriends.controller;
 
-import com.tonghoangvu.lhufriends.common.ValidationProfiles;
+import com.tonghoangvu.lhufriends.common.ValidationProfile;
 import com.tonghoangvu.lhufriends.component.AuthenticationFacade;
 import com.tonghoangvu.lhufriends.entity.UserEntity;
 import com.tonghoangvu.lhufriends.model.request.UserRequest;
@@ -36,7 +36,7 @@ public class AccountController {
     @PreAuthorize("hasAnyRole('USER')")
     @PutMapping("/")
     public @NotNull ResponseEntity<UserInfo> updateMyAccount(
-            @Validated(ValidationProfiles.OnUpdate.class) @RequestBody @NotNull UserRequest userRequest,
+            @Validated(ValidationProfile.OnUpdate.class) @RequestBody @NotNull UserRequest userRequest,
             @NotNull BindingResult bindingResult) {
         ControllerUtil.handleBindingError(bindingResult);
         String myUsername = authenticationFacade.getUsername();

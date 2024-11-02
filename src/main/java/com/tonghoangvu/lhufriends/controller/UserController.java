@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.tonghoangvu.lhufriends.common.ValidationProfiles.OnCreate;
+import static com.tonghoangvu.lhufriends.common.ValidationProfile.OnCreate;
 
 @RestController
 @RequestMapping("/api/users")
